@@ -1,3 +1,7 @@
+#$^ : liste des dépendances
+#$@ : nom de la cible
+#$< : nom de la première dépendance
+
 CC=g++
 CCFLAGS= -Wall -Werror -std=c++11 -g
 SRC= $(wildcard sources/*.cc)
@@ -6,11 +10,8 @@ EXEC= programme
 
 all: $(EXEC)
 
-testcase : $(OBJ_TEST) 
-	g++ -std=c++11 -Wall  -o $@ $^
-
 $(EXEC): $(OBJ)
-	$(CC) $(LIBFLAGS) $^ -o $@  
+	$(CC) $(LIBFLAGS) $^ -o $@
 
 %.o: %.cc
 	$(CC) $(CCFLAGS) -o $@ -c $<
