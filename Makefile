@@ -6,7 +6,7 @@ CC=g++
 CCFLAGS= -Wall -Werror -std=c++11 -g
 SRC= $(wildcard sources/*.cc)
 OBJ= $(SRC:.cc=.o)
-EXEC= programme 
+EXEC= time_bomb 
 
 all: $(EXEC)
 
