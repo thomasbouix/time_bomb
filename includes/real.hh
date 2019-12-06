@@ -7,5 +7,4 @@ class Real : public Player {
 		Real();
 		Real(int color, std::string name);
 		virtual void draw();
-		virtual void draw(Player* p, int card);
 };

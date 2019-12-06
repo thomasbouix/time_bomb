@@ -3,5 +3,5 @@
 Safety::Safety(){}
 
 std::string Safety::to_string() const {
-	return "Safety Card found !\n";
+	return "Safety";
 }

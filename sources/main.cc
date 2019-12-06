@@ -9,6 +9,14 @@
 #include "../includes/player.hh"
 #include "../includes/real.hh"
 
+void display_vec(std::vector<Card*> v) {
+
+	for (std::vector<Card*>::iterator it = v.begin(); it != v.end(); it++) {
+		std::cout << (*it)->to_string() << " / " ;
+	}
+	std::cout << "\n====================\n";
+}
+
 int main(int argc, char * argv[]) {
 
 	/* ===========TEST CARD=========== */
@@ -17,26 +25,32 @@ int main(int argc, char * argv[]) {
 	Defuser d1;
 	Bomb b1;
 
-	std::vector<Card*> full_deck;
+	// std::vector<Card*> full_deck;
 
-	full_deck.push_back(&s1);
-	full_deck.push_back(&d1);
-	full_deck.push_back(&b1);
+	// full_deck.push_back(&s1);
+	// full_deck.push_back(&d1);
+	// full_deck.push_back(&b1);
 
-	// for (std::vector<Card*>::iterator it = full_deck.begin(); it != full_deck.end(); it++) {
-	// 	std::cout << (*it)->to_string();
-	// }
+	// display_vec(full_deck);
+
+	// full_deck.erase(full_deck.begin()+2);
+
+	// display_vec(full_deck);
 
 	/* ===========TEST PLAYER=========== */
 
-	Real r1;
-	Real r2(BLEU, "Thomas");
+	Real aziz(RED, "Aziz");
+	Real thomas(BLUE, "Thomas");
 
-	std::cout << r1.get_name() << std::endl;
-	std::cout << r2.get_name() << std::endl;
- 
-	r1.draw();
-	r1.draw(&r2, 3);
+	thomas.add_card(&s1);
+	thomas.add_card(&d1);
+	thomas.add_card(&b1);
+
+	thomas.to_string();
+
+	aziz.draw((Player*) &thomas, 1);	// ERREUR
+
+	// thomas.to_string();
 
 	return 0;
 }

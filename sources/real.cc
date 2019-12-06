@@ -10,10 +10,3 @@ void Real::draw() {
 	
 	std::cout << "Auto draw !\n";
 }
-
-void Real::draw(Player* p, int card) {
-
-	// Implémenter un tirage ciblé
-
-	std::cout << "Targeted draw !\n";
-}

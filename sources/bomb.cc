@@ -3,5 +3,5 @@
 Bomb::Bomb(){}
 
 std::string Bomb::to_string() const {
-	return "Bomb found !\n";
+	return "Bomb";
 }
