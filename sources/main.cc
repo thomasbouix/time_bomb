@@ -12,14 +12,6 @@
 #include "../includes/weak.hh"
 #include "../includes/strong.hh"
 
-void display_vec(std::vector<Card*> v) {
-
-	for (std::vector<Card*>::iterator it = v.begin(); it != v.end(); it++) {
-		std::cout << (*it)->to_string() << " / " ;
-	}
-	std::cout << "\n====================\n";
-}
-
 int main(int argc, char * argv[]) {
 
 	// CARDS
@@ -43,12 +35,12 @@ int main(int argc, char * argv[]) {
 
 	std::cout << thomas.to_string();
 
-	Weak w1(1);
+	Weak w1(RED);
 	std::cout << w1.to_string();
 
 	w1.draw(&thomas, 0);
 
-	Strong str1(0);
+	Strong str1(BLUE);
 	std::cout << str1.to_string();
 	str1.draw(&thomas, 0);
 
