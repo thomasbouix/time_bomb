@@ -68,4 +68,4 @@ void Player::draw(Player* p, int card) {
 	// std::cout << "Targeted draw !\n";
 
 	(*p).remove_card(card);
-}
+}	

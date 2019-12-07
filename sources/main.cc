@@ -19,26 +19,12 @@ void display_vec(std::vector<Card*> v) {
 
 int main(int argc, char * argv[]) {
 
-	/* ===========TEST CARD=========== */
-
+	// CARDS
 	Safety s1;
 	Defuser d1;
 	Bomb b1;
 
-	// std::vector<Card*> full_deck;
-
-	// full_deck.push_back(&s1);
-	// full_deck.push_back(&d1);
-	// full_deck.push_back(&b1);
-
-	// display_vec(full_deck);
-
-	// full_deck.erase(full_deck.begin()+2);
-
-	// display_vec(full_deck);
-
-	/* ===========TEST PLAYER=========== */
-
+	// PLAYERS
 	Real aziz(RED, "Aziz");
 	Real thomas(BLUE, "Thomas");
 
@@ -48,7 +34,9 @@ int main(int argc, char * argv[]) {
 
 	std::cout << thomas.to_string();
 
-	aziz.draw((Player*) &thomas, 1);	// ERREUR
+	aziz.draw(&thomas, 1);
+	aziz.draw(&thomas, 1);
+	aziz.draw(&thomas, 0);
 
 	std::cout << thomas.to_string();
 
