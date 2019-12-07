@@ -6,7 +6,7 @@ Real::Real(int c, std::string n) : Player(c, n) {}
 
 void Real::draw() {
 
-	// Implémenter un tirage automatique
+	// Implémenter un tirage automatique spécifique à REAL
 	// Besoin de la liste des joueurs dans GAME pour cela
 	
 	std::cout << "Auto draw !\n";

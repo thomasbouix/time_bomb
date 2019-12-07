@@ -9,6 +9,9 @@
 #include "../includes/player.hh"
 #include "../includes/real.hh"
 
+#include "../includes/weak.hh"
+#include "../includes/strong.hh"
+
 void display_vec(std::vector<Card*> v) {
 
 	for (std::vector<Card*>::iterator it = v.begin(); it != v.end(); it++) {
@@ -34,11 +37,20 @@ int main(int argc, char * argv[]) {
 
 	std::cout << thomas.to_string();
 
-	aziz.draw(&thomas, 1);
-	aziz.draw(&thomas, 1);
-	aziz.draw(&thomas, 0);
+	// aziz.draw(&thomas, 1);
+	// aziz.draw(&thomas, 1);
+	// aziz.draw(&thomas, 0);
 
 	std::cout << thomas.to_string();
+
+	Weak w1(1);
+	std::cout << w1.to_string();
+
+	w1.draw(&thomas, 0);
+
+	Strong str1(0);
+	std::cout << str1.to_string();
+	str1.draw(&thomas, 0);
 
 	return 0;
 }
