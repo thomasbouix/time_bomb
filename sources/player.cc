@@ -46,7 +46,7 @@ std::string Player::to_string() {
 void Player::add_card(Card* card) {
 
 	deck.push_back(card);
-	std::cout << card->to_string() << " card added\n" ;
+	// std::cout << card->to_string() << " card added\n" ;
 }
 
 void Player::remove_card(int card) {
@@ -65,7 +65,7 @@ void Player::remove_card(int card) {
 
 void Player::draw(Player* p, int card) {
 
-	std::cout << "Targeted draw !\n";
+	// std::cout << "Targeted draw !\n";
 
 	(*p).remove_card(card);
 }

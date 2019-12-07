@@ -46,11 +46,11 @@ int main(int argc, char * argv[]) {
 	thomas.add_card(&d1);
 	thomas.add_card(&b1);
 
-	thomas.to_string();
+	std::cout << thomas.to_string();
 
 	aziz.draw((Player*) &thomas, 1);	// ERREUR
 
-	// thomas.to_string();
+	std::cout << thomas.to_string();
 
 	return 0;
 }
