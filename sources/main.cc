@@ -13,9 +13,10 @@
 
 #include "../includes/game.hh"
 
+
 int main(int argc, char * argv[]) {
 
-	Game g1(9);
+	Game g1(4);
 	g1.fill_deck();
 
 	std::cout << g1.to_string();

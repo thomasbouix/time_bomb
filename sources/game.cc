@@ -72,11 +72,20 @@ void Game::fill_deck() {
 
 std::string Game::to_string() {
 
+	int safeties = 0;
+	int defusers = 0;
+	int bomb = 0;
+
 	std::string res = "Game :\n";
 
 	for (std::vector<Card*>::iterator it = full_deck.begin(); it != full_deck.end(); it++) {
 		res = res + (*it)->to_string() + " / ";
+		if (typeid(**it) == typeid(Safety)) safeties ++;
+		else if (typeid(**it) == typeid(Defuser)) defusers++;
+		else if(typeid(**it) == typeid(Bomb)) bomb++;
 	}
-	res = res.substr(0, res.size() - 2);
-	return res + '\n';
+
+	res = res.substr(0, res.size() - 2) + '\n';
+	res = res + "Safeties = " + std::to_string(safeties) + "; Defusers = " + std::to_string(defusers) + "; Bomb = " + std::to_string(bomb) + '\n';
+	return res;
 }

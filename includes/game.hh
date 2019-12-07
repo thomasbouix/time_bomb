@@ -1,6 +1,8 @@
 #pragma once
+#include <typeinfo>
 #include "player.hh"
 #include "card.hh"
+
 
 class Game {
 
