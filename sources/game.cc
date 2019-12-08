@@ -143,7 +143,8 @@ std::string Game::to_string() {
 	int defusers = 0;
 	int bomb = 0;
 
-	std::string res = "Game :\n";
+	std::string res = "=============\n";
+	res += "Paquet de carte:\n";
 	
 	for (std::vector<Card*>::iterator it = full_deck.begin(); it != full_deck.end(); it++) {
 		res = res + (*it)->to_string() + " / ";
@@ -154,13 +155,13 @@ std::string Game::to_string() {
 
 	res = res.substr(0, res.size() - 2) + '\n';
 	res = res + "Safeties = " + std::to_string(safeties) + "; Defusers = " + std::to_string(defusers) + "; Bomb = " + std::to_string(bomb);
-	res += "\n==========\n";
+	res += "\n===\n";
 	
 	for (std::vector<Player*>::iterator it = players.begin(); it != players.end(); it++) {
 		res = res + (*it)->to_string() + '\n';
 	}
 
-	res += "==========\n";
+	res += "=============\n";
 	return res;
 }
 
@@ -170,21 +171,46 @@ void Game::deal() {
 
 	this->drew_cards_rd = 0; // Réinitialise le nombre de carte tirée dans le round à zéro
 
-	// On vide le deck de chaque joueur
+	// ======== On vide le deck de chaque joueur ========
 	for (std::vector<Player*>::iterator it = players.begin(); it != players.end(); it++) {
 		(*it)->clear_deck();
 	}
 
-	int i_player = 0;	// Joueur à servir 
+	// ======= Distribution effective (aléatoire) =======
+	srand(time(NULL));
+	// Tableau représentant full_deck : 0 <=> carte non distribuée
+	int * deck_aux = new int[full_deck.size()]();
+	// Nombre de cartes restantes à distribuer
+	int nb_to_deal = full_deck.size();
+	// Joueur à servir 
+	int i_player = 0;
 
-	// Distribution effective
-	for (std::vector<Card*>::iterator it = full_deck.begin(); it != full_deck.end(); it++) {
-		players[i_player]->add_card((*it));
+	while (nb_to_deal != 0) {
+		
+		int card_to_deal = rand() % nb_to_deal; 	// selectionne une carte à distribuer parmis les 0
+		int i_deck = 0; 							// parcours le deck jusqu'à atteindre la carte à distribuer
+		int i_card_to_deal = 0; 					// parcours les cartes restantes (=>0)
+	
+		// On se positionne sur le premier 0
+		while(deck_aux[i_deck] == 1) 
+			i_deck++;
+
+		// Trouve l'indice de la carte à distribuer
+		while (i_card_to_deal != card_to_deal) {
+			i_deck++;
+			if (deck_aux[i_deck] == 0)
+				i_card_to_deal++;
+		}
+
+		players[i_player]->add_card(full_deck[i_deck]); // Distribue la carte
 
 		if (i_player == nb_players - 1) 
 			i_player = 0;
 		else 
 			i_player++;
+		
+		deck_aux[i_deck] = 1; // Met à jour le tableau auxilliaire
+		nb_to_deal--;
 	}
 }
 
@@ -206,13 +232,11 @@ void Game::draw(Player* a, Player* b, int card) {
 	}
 
 	 a->draw(b, card);	// Supprime le pointeur du player::deck
-	 std::cout << "Deleted in player::deck\n";
 
 	 // Supprime le pointeur du game::full_deck
 	 for (std::vector<Card*>::iterator it = full_deck.begin(); it != full_deck.end(); it++) {
 	 	if (*it == removed_card) {
 	 		full_deck.erase(it);
-	 		std::cout << "Delete in game::full_deck\n";
 	 		break;
 	 	}
 	 }
@@ -221,7 +245,7 @@ void Game::draw(Player* a, Player* b, int card) {
 	 delete removed_card;
 }
 
-void Game::test(int a, int b, int c) {
+void Game::test_draw(int a, int b, int c) {
 
 	draw(players[a], players[b], c);
 }

@@ -1,7 +1,7 @@
 #include "../includes/player.hh"
 
 Player::~Player() {
-	std::cout << "Player deleted from memory\n";
+	// std::cout << "Player deleted from memory\n";
 }
 
 Player::Player() {

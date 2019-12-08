@@ -32,8 +32,7 @@ class Game {
 		void deal();												// Distribue les cartes encore en jeu 
 
 		void draw(Player* a, Player* b, int card);					// pa pioche une carte chez pb
+		void test_draw(int a, int b, int c);						// draw avec des indices, utilise game::draw(Player*, Player*, int)
 
 		std::string to_string();
-
-		void test(int a, int b, int c);		// fonction pour les test
 };

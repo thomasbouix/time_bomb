@@ -13,15 +13,16 @@ int main(int argc, char * argv[]) {
 	real_players.push_back("Thomas");
 	real_players.push_back("Ludovic");
 	real_players.push_back("Eugène");
-	real_players.push_back("Marc");
+	// real_players.push_back("Marc");
+	// real_players.push_back("Théo");
 
-	Game g1(6, real_players);
+	Game g1(4, real_players);
 
 	g1.deal();
 
 	std::cout << g1.to_string();
 
-	g1.test(1,2,3);
+	g1.test_draw(1,2,3);
 
 	std::cout << g1.to_string();
 
