@@ -94,14 +94,14 @@ void Game::fill_players(std::vector<std::string> real_players) {
 			case BLUE :
 				if (blue_done < nb_blue) {
 					players.push_back(new Real(BLUE, real_players[players_done]));
-					std::cout << "Blue added : " << real_players[players_done] << '\n';
+					// std::cout << "Blue added : " << real_players[players_done] << '\n';
 					blue_done++; players_done++;
 				} 
 				break;
 			case RED :
 				if (red_done < nb_red) {
 					players.push_back(new Real(RED, real_players[players_done]));
-					std::cout << "Red added : " << real_players[players_done] << '\n';
+					// std::cout << "Red added : " << real_players[players_done] << '\n';
 					red_done++; players_done++;
 				}
 				break;
@@ -117,14 +117,14 @@ void Game::fill_players(std::vector<std::string> real_players) {
 			case BLUE :
 				if (blue_done < nb_blue) {
 					players.push_back(new Weak(BLUE));
-					std::cout << "Blue Bot added" << '\n';
+					// std::cout << "Blue Bot added" << '\n';
 					blue_done++; players_done++;
 				} 
 				break;
 			case RED :
 				if (red_done < nb_red) {
 					players.push_back(new Weak(RED));
-					std::cout << "Red Bot added" << '\n';
+					// std::cout << "Red Bot added" << '\n';
 					red_done++; players_done++;
 				}
 				break;
@@ -141,7 +141,7 @@ std::string Game::to_string() {
 	int bomb = 0;
 
 	std::string res = "Game :\n";
-
+	
 	for (std::vector<Card*>::iterator it = full_deck.begin(); it != full_deck.end(); it++) {
 		res = res + (*it)->to_string() + " / ";
 		if (typeid(**it) == typeid(Safety)) safeties ++;
@@ -150,11 +150,43 @@ std::string Game::to_string() {
 	}
 
 	res = res.substr(0, res.size() - 2) + '\n';
-	res = res + "Safeties = " + std::to_string(safeties) + "; Defusers = " + std::to_string(defusers) + "; Bomb = " + std::to_string(bomb) + '\n';
+	res = res + "Safeties = " + std::to_string(safeties) + "; Defusers = " + std::to_string(defusers) + "; Bomb = " + std::to_string(bomb);
+	res += "\n==========\n";
 	
 	for (std::vector<Player*>::iterator it = players.begin(); it != players.end(); it++) {
 		res = res + (*it)->to_string() + '\n';
 	}
 
+	res += "==========\n";
 	return res;
+}
+
+
+// Distribution dans l'ordre de full_deck donc non-aléatoire --> A CORRIGER
+void Game::deal() {
+
+	// On vide le deck de chaque joueur
+	for (std::vector<Player*>::iterator it = players.begin(); it != players.end(); it++) {
+		(*it)->clear_deck();
+	}
+
+	int i_player = 0;	// Joueur à servir 
+
+	// Distribution effective
+	for (std::vector<Card*>::iterator it = full_deck.begin(); it != full_deck.end(); it++) {
+		players[i_player]->add_card((*it));
+
+		if (i_player == nb_players - 1) 
+			i_player = 0;
+		else 
+			i_player++;
+	}
+}
+
+void Game::draw(Player* a, Player* b, int card) {
+
+	// Penser à delete la carte dans Game::full_deck après l'avoir retirer de Player::deck
+	/*
+	 * a->draw(b, card);
+	 */
 }

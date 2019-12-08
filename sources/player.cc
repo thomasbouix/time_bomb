@@ -68,9 +68,13 @@ void Player::remove_card(int card) {
 	deck.erase(deck.begin() + removed_card);
 }
 
+void Player::clear_deck() {
+	deck.clear();
+}
+
 void Player::draw(Player* p, int card) {
 
 	// std::cout << "Targeted draw !\n";
 
 	(*p).remove_card(card);
-}	
+}

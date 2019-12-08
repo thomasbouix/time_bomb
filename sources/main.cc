@@ -1,29 +1,23 @@
 #include <iostream>
 #include <vector>
 
-#include "../includes/card.hh"
-#include "../includes/safety.hh"
-#include "../includes/defuser.hh"
-#include "../includes/bomb.hh"
-
-#include "../includes/player.hh"
-#include "../includes/real.hh"
-#include "../includes/weak.hh"
-#include "../includes/strong.hh"
-
 #include "../includes/game.hh"
-
+#include "../includes/safety.hh"
+#include "../includes/real.hh"
 
 int main(int argc, char * argv[]) {
 
-	std::vector<std::string> players;
+	std::vector<std::string> real_players;
 
-	players.push_back("Aziz"); 
-	players.push_back("Thomas");
-	players.push_back("Ludovic");
-	players.push_back("Eugène");
+	real_players.push_back("Aziz"); 
+	real_players.push_back("Thomas");
+	real_players.push_back("Ludovic");
+	real_players.push_back("Eugène");
+	real_players.push_back("Marc");
 
-	Game g1(6, players);
+	Game g1(6, real_players);
+
+	g1.deal();
 
 	std::cout << g1.to_string();
 

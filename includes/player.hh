@@ -23,6 +23,7 @@ class Player {
 
 		void add_card(Card* card);				// Ajoute une carte au deck
 		void remove_card(int card);				// Supprime une carte du deck 
+		void clear_deck();						// Vide le deck du joueur
 
 		std::string to_string(void);
 };

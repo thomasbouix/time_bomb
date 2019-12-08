@@ -3,7 +3,6 @@
 #include "player.hh"
 #include "card.hh"
 
-
 class Game {
 
 	private :
@@ -27,7 +26,7 @@ class Game {
 	public :
 		Game(int nb_players, std::vector<std::string> real_players);
 
-		void fill_deck();											// Instancie toutes les cartes du jeu
+		void fill_deck();											// Instancie toutes les cartes du jeu 
 		void fill_players(std::vector<std::string> real_players);	// Instancie tous les joueurs réels et complète avec des bots
 		void deal();												// Distribue les cartes encore en jeu 
 
