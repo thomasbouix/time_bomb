@@ -2,8 +2,13 @@
 
 Player::Player() {
 
-	srand(time(NULL));
-	color = rand() % 2;
+	// on change la seed entre deux instanciations
+	static int alea = 0;
+	srand(time(NULL) + alea);
+	alea++;
+
+	// Couleur initialisée, puis modifiée si besoin avec Bot(int)
+	color = rand() % 2;		
 
 	int n = rand() % 5;
 

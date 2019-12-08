@@ -25,13 +25,13 @@ class Game {
 		Player * current_player;			// Joueur qui a la main 
 
 	public :
-		Game(int nb_players);
+		Game(int nb_players, std::vector<std::string> real_players);
 
-		void fill_deck();							// Instancie toutes les cartes du jeu
-		void fill_players();						// Instancie tous les joueurs du jeu
-		void deal();								// Distribue les cartes encore en jeu 
+		void fill_deck();											// Instancie toutes les cartes du jeu
+		void fill_players(std::vector<std::string> real_players);	// Instancie tous les joueurs réels et complète avec des bots
+		void deal();												// Distribue les cartes encore en jeu 
 
-		void draw(Player* a, Player* b, int card);	// pa pioche une carte chez pb
+		void draw(Player* a, Player* b, int card);					// pa pioche une carte chez pb
 
 		std::string to_string();
 };

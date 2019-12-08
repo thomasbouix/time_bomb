@@ -1,9 +1,17 @@
 #include "../includes/game.hh"
+
 #include "../includes/safety.hh"
 #include "../includes/defuser.hh"
 #include "../includes/bomb.hh"
 
-Game::Game(int nb_players) {
+#include "../includes/player.hh"
+#include "../includes/real.hh"
+#include "../includes/weak.hh"
+#include "../includes/strong.hh"
+
+Game::Game(int nb_players, std::vector<std::string> real_players) {
+
+	this->nb_players = nb_players;
 
 	switch (nb_players) {
 		case 4 : // Une carte non distribuée
@@ -30,6 +38,9 @@ Game::Game(int nb_players) {
 			std::cout << "Number of players invalid\n";
 			return;
 	}
+
+	fill_deck();
+	fill_players(real_players);
 }
 
 void Game::fill_deck() {
@@ -64,10 +75,63 @@ void Game::fill_deck() {
 				}
 				break;
 			default :
-				std::cout << "error fill_deck";
-				break;
+				return;
 		}
 	}
+}
+
+void Game::fill_players(std::vector<std::string> real_players) {
+	srand(time(NULL));
+
+	int players_done = 0;
+	int red_done = 0;
+	int blue_done = 0;
+
+	// instanciation des joueurs réels d'abord
+	while ((size_t) players_done != real_players.size()) {
+		int color = rand() % 2;
+		switch (color) {
+			case BLUE :
+				if (blue_done < nb_blue) {
+					players.push_back(new Real(BLUE, real_players[players_done]));
+					std::cout << "Blue added : " << real_players[players_done] << '\n';
+					blue_done++; players_done++;
+				} 
+				break;
+			case RED :
+				if (red_done < nb_red) {
+					players.push_back(new Real(RED, real_players[players_done]));
+					std::cout << "Red added : " << real_players[players_done] << '\n';
+					red_done++; players_done++;
+				}
+				break;
+			default :
+				return;
+		}
+	}
+
+	// Complétion avec des Bot
+	while (players_done != nb_players) {
+		int color = rand() % 2;
+		switch (color) {
+			case BLUE :
+				if (blue_done < nb_blue) {
+					players.push_back(new Weak(BLUE));
+					std::cout << "Blue Bot added" << '\n';
+					blue_done++; players_done++;
+				} 
+				break;
+			case RED :
+				if (red_done < nb_red) {
+					players.push_back(new Weak(RED));
+					std::cout << "Red Bot added" << '\n';
+					red_done++; players_done++;
+				}
+				break;
+			default :
+				return;
+		}
+	} 
 }
 
 std::string Game::to_string() {
@@ -87,5 +151,10 @@ std::string Game::to_string() {
 
 	res = res.substr(0, res.size() - 2) + '\n';
 	res = res + "Safeties = " + std::to_string(safeties) + "; Defusers = " + std::to_string(defusers) + "; Bomb = " + std::to_string(bomb) + '\n';
+	
+	for (std::vector<Player*>::iterator it = players.begin(); it != players.end(); it++) {
+		res = res + (*it)->to_string() + '\n';
+	}
+
 	return res;
 }

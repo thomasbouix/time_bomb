@@ -16,8 +16,14 @@
 
 int main(int argc, char * argv[]) {
 
-	Game g1(4);
-	g1.fill_deck();
+	std::vector<std::string> players;
+
+	players.push_back("Aziz"); 
+	players.push_back("Thomas");
+	players.push_back("Ludovic");
+	players.push_back("Eugène");
+
+	Game g1(6, players);
 
 	std::cout << g1.to_string();
 

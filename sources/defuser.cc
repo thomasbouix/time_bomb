@@ -3,5 +3,5 @@
 Defuser::Defuser(){}
 
 std::string Defuser::to_string() const {
-	return "Defuser";
+	return "D";
 }
