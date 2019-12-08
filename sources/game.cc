@@ -225,3 +225,16 @@ void Game::test(int a, int b, int c) {
 
 	draw(players[a], players[b], c);
 }
+
+Game::~Game() {
+
+	// suppression des cartes
+	for (std::vector<Card*>::iterator it = full_deck.begin(); it != full_deck.end(); it++) {
+		delete *it;
+	}
+
+	// Suppression des joueurs
+	for (std::vector<Player*>::iterator it = players.begin(); it != players.end(); it++) {
+		delete *it;
+	}
+}

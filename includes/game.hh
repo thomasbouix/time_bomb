@@ -25,6 +25,7 @@ class Game {
 
 	public :
 		Game(int nb_players, std::vector<std::string> real_players);
+		~Game();
 
 		void fill_deck();											// Instancie toutes les cartes du jeu 
 		void fill_players(std::vector<std::string> real_players);	// Instancie tous les joueurs réels et complète avec des bots

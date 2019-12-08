@@ -15,6 +15,7 @@ class Player {
 	public :
 		Player();								// Instanciation aléatoire, utile pour les BOT
 		Player(int color, std::string name);
+		virtual ~Player();
 
 		std::string get_name(void) const;
 

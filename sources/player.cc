@@ -1,5 +1,9 @@
 #include "../includes/player.hh"
 
+Player::~Player() {
+	std::cout << "Player deleted from memory\n";
+}
+
 Player::Player() {
 
 	// on change la seed entre deux instanciations
@@ -80,6 +84,6 @@ void Player::draw(Player* p, int card) {
 }
 
 Card* Player::get_card(int card) {
-	
+
 	return deck[card];
 } 
