@@ -21,5 +21,9 @@ int main(int argc, char * argv[]) {
 
 	std::cout << g1.to_string();
 
+	g1.test(1,2,3);
+
+	std::cout << g1.to_string();
+
 	return 0;
 }

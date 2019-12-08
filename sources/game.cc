@@ -12,6 +12,9 @@
 Game::Game(int nb_players, std::vector<std::string> real_players) {
 
 	this->nb_players = nb_players;
+	this->nb_round = 0;
+	this->drew_cards_rd = 0;
+	this->def_found = 0;
 
 	switch (nb_players) {
 		case 4 : // Une carte non distribuée
@@ -165,6 +168,8 @@ std::string Game::to_string() {
 // Distribution dans l'ordre de full_deck donc non-aléatoire --> A CORRIGER
 void Game::deal() {
 
+	this->drew_cards_rd = 0; // Réinitialise le nombre de carte tirée dans le round à zéro
+
 	// On vide le deck de chaque joueur
 	for (std::vector<Player*>::iterator it = players.begin(); it != players.end(); it++) {
 		(*it)->clear_deck();
@@ -185,8 +190,38 @@ void Game::deal() {
 
 void Game::draw(Player* a, Player* b, int card) {
 
-	// Penser à delete la carte dans Game::full_deck après l'avoir retirer de Player::deck
-	/*
-	 * a->draw(b, card);
-	 */
+	Card * removed_card = b->get_card(card);	// Pointeur sur la carte à supprimer
+
+	this->drew_cards_rd++;	// Actualise le nombre de cartes tirées dans un round
+
+	if (typeid(*removed_card) == typeid(Safety)) {
+		std::cout << "Safety found !\n";
+	}
+	else if (typeid(*removed_card) == typeid(Defuser)) {
+		std::cout << "Defuser found !\n";
+		def_found++;
+	}
+	else if (typeid(*removed_card) == typeid(Bomb)) {
+		std::cout << "Bomb found !\n";
+	}
+
+	 a->draw(b, card);	// Supprime le pointeur du player::deck
+	 std::cout << "Deleted in player::deck\n";
+
+	 // Supprime le pointeur du game::full_deck
+	 for (std::vector<Card*>::iterator it = full_deck.begin(); it != full_deck.end(); it++) {
+	 	if (*it == removed_card) {
+	 		full_deck.erase(it);
+	 		std::cout << "Delete in game::full_deck\n";
+	 		break;
+	 	}
+	 }
+
+	 // Supprime l'objet et donc aussi le pointeur du game::full_deck 
+	 delete removed_card;
+}
+
+void Game::test(int a, int b, int c) {
+
+	draw(players[a], players[b], c);
 }

@@ -33,4 +33,6 @@ class Game {
 		void draw(Player* a, Player* b, int card);					// pa pioche une carte chez pb
 
 		std::string to_string();
+
+		void test(int a, int b, int c);		// fonction pour les test
 };

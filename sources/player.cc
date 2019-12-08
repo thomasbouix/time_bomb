@@ -78,3 +78,8 @@ void Player::draw(Player* p, int card) {
 
 	(*p).remove_card(card);
 }
+
+Card* Player::get_card(int card) {
+	
+	return deck[card];
+} 
