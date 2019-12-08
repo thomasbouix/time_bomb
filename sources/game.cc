@@ -218,6 +218,7 @@ void Game::deal() {
 		deck_aux[i_deck] = 1; // Met à jour le tableau auxilliaire
 		nb_to_deal--;
 	}
+	delete[] deck_aux;
 }
 
 void Game::draw(Player* a, Player* b, int card) {
