@@ -67,7 +67,7 @@ void Player::remove_card(int card) {
 
 	int removed_card = card % deck.size();		// Elimine les indices trop grands
 
-	std::cout << deck[removed_card]->to_string() << " removed ! \n";
+	// std::cout << deck[removed_card]->to_string() << " removed ! \n";
 	
 	deck.erase(deck.begin() + removed_card);
 }

@@ -23,6 +23,11 @@ int main(int argc, char * argv[]) {
 	std::cout << g1.to_string();
 
 	g1.test_draw(1,2,3);
+	g1.test_draw(2,3,2);
+	g1.test_draw(3,1,3);
+	g1.test_draw(1,2,3);
+
+	// FIN DU ROUND !
 
 	std::cout << g1.to_string();
 
