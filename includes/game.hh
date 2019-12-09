@@ -34,6 +34,7 @@ class Game {
 
 		bool draw(Player* a, Player* b, int card);					// pa pioche une carte chez pb, puis deal() si fin du round
 		bool test_draw(int a, int b, int c);						// draw avec des indices, utilise game::draw(Player*, Player*, int)
+		bool play_draw(Player* nxt, std::string target, int card);	// fonction qu'utilise game::play()
 
 		std::string to_string();
 

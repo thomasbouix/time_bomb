@@ -274,20 +274,26 @@ void Game::play() {
 
 	deal();
 
+	next_player = players[0];
+
 	std::string line = "";
 
 	while (!bomb_found && (def_found < nb_defusers) && nb_round < 4) {
 
 		std::cout << to_string();
 
-		int a, b, c;
+		std::string target;
+		int c;
 
-		std::cin >> a;
-		std::cin >> b;
+		std::cout << next_player->get_name() << ", your turn to play :\n";
+
+		std::cin >> target;
 		std::cin >> c;
 
-		if(test_draw(a, b, c))
+		if(play_draw(next_player, target, c))
 			drew_cards_rd++;
+		else 
+			std::cout << "No cards to draw !";
 
 		if (drew_cards_rd == nb_players) {
 			std::cout << "END ROUND\n";
@@ -297,6 +303,7 @@ void Game::play() {
 		}
 	}
 
+	// ===== END GAME ====
 	if (bomb_found)
 		std::cout << "BOOM ! So many smoke !\n";
 	else if (def_found == nb_defusers)
@@ -307,6 +314,26 @@ void Game::play() {
 	std::cout << "END GAME\n";
 }
 
+bool Game::play_draw(Player* nxt, std::string target, int c) {
+
+	Player* t = NULL;
+
+	// Cherche le player* cible en fonciton de son nom
+	for (std::vector<Player*>::iterator it = players.begin(); it != players.end(); it++) {
+		if ((*it)->get_name() == target) {
+			t = *it;
+			break;
+		}
+	}
+
+	if (t == NULL) {
+		std::cout << "Incorrect player name\n";
+		return false;
+	}
+
+	return draw(nxt, t, c);
+}
+
 bool Game::test_draw(int a, int b, int c) {
 
 	int res_a = a % players.size();
@@ -314,4 +341,3 @@ bool Game::test_draw(int a, int b, int c) {
 
 	return draw(players[res_a], players[res_b], c);
 }
-
