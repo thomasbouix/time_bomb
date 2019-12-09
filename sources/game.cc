@@ -47,6 +47,19 @@ Game::Game(int nb_players, std::vector<std::string> real_players) {
 	fill_players(real_players);
 }
 
+Game::~Game() {
+
+	// suppression des cartes
+	for (std::vector<Card*>::iterator it = full_deck.begin(); it != full_deck.end(); it++) {
+		delete *it;
+	}
+
+	// Suppression des joueurs
+	for (std::vector<Player*>::iterator it = players.begin(); it != players.end(); it++) {
+		delete *it;
+	}
+}
+
 void Game::fill_deck() {
 
 	srand(time(NULL));
@@ -174,9 +187,6 @@ std::string Game::to_string() {
 
 void Game::deal() {
 
-	this->drew_cards_rd = 0; // Réinitialise le nombre de carte tirée dans le round à zéro
-	this->nb_round++;		 // Démarre un nouveau round
-
 	// ======== On vide le deck de chaque joueur ========
 	for (std::vector<Player*>::iterator it = players.begin(); it != players.end(); it++) {
 		(*it)->clear_deck();
@@ -221,7 +231,12 @@ void Game::deal() {
 	delete[] deck_aux;
 }
 
-void Game::draw(Player* a, Player* b, int card) {
+bool Game::draw(Player* a, Player* b, int card) {
+
+	// Pas de carte à piocher
+	if (b->get_size_deck() == 0) {
+		return false;
+	}
 
 	Card * removed_card = b->get_card(card);	// Pointeur sur la carte à supprimer
 
@@ -237,7 +252,7 @@ void Game::draw(Player* a, Player* b, int card) {
 		bomb_found++;
 	}
 
-	 a->draw(b, card);	// Supprime le pointeur du player::deck
+	a->draw(b, card);	// Supprime le pointeur du player::deck
 
 	 // Supprime le pointeur du game::full_deck
 	for (std::vector<Card*>::iterator it = full_deck.begin(); it != full_deck.end(); it++) {
@@ -250,29 +265,53 @@ void Game::draw(Player* a, Player* b, int card) {
 	// Supprime l'objet et donc aussi le pointeur du game::full_deck 
 	delete removed_card;
 
-	this->drew_cards_rd++;	// Actualise le nombre de cartes tirées dans un round
 	next_player = b;
 
-	if (drew_cards_rd == nb_players) {
-		std::cout << "END ROUND !\n";
-		deal();
-	}
+	return true;
 }
 
-void Game::test_draw(int a, int b, int c) {
+void Game::play() {
 
-	draw(players[a], players[b], c);
-}
+	deal();
 
-Game::~Game() {
+	std::string line = "";
 
-	// suppression des cartes
-	for (std::vector<Card*>::iterator it = full_deck.begin(); it != full_deck.end(); it++) {
-		delete *it;
+	while (!bomb_found && (def_found < nb_defusers) && nb_round < 4) {
+
+		std::cout << to_string();
+
+		int a, b, c;
+
+		std::cin >> a;
+		std::cin >> b;
+		std::cin >> c;
+
+		if(test_draw(a, b, c))
+			drew_cards_rd++;
+
+		if (drew_cards_rd == nb_players) {
+			std::cout << "END ROUND\n";
+			drew_cards_rd = 0;
+			nb_round++;
+			deal();
+		}
 	}
 
-	// Suppression des joueurs
-	for (std::vector<Player*>::iterator it = players.begin(); it != players.end(); it++) {
-		delete *it;
-	}
+	if (bomb_found)
+		std::cout << "BOOM ! So many smoke !\n";
+	else if (def_found == nb_defusers)
+		std::cout << "Bomb defused !\n";
+	else 
+		std::cout << "No more rounds !\n";
+
+	std::cout << "END GAME\n";
 }
+
+bool Game::test_draw(int a, int b, int c) {
+
+	int res_a = a % players.size();
+	int res_b = b % players.size();
+
+	return draw(players[res_a], players[res_b], c);
+}
+

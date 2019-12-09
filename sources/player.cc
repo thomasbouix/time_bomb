@@ -85,5 +85,11 @@ void Player::draw(Player* p, int card) {
 
 Card* Player::get_card(int card) {
 
-	return deck[card];
+	int i_res = card % deck.size();
+
+	return deck[i_res];
 } 
+
+int Player::get_size_deck() const  {
+	return deck.size();
+}

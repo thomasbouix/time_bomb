@@ -6,6 +6,10 @@
 class Game {
 
 	private :
+		// Container
+		std::vector<Player*> players;		// Ensemble des joueurs participants
+		std::vector<Card*> full_deck;		// Ensemble des cartes restantes
+
 		// Variables d'initialisation
 		int nb_players;						// Nombre de joueurs (Real + Bot)
 		int nb_blue;						// Nombre de bleus potentiels
@@ -13,11 +17,7 @@ class Game {
 		int nb_safeties;					// Safety cards à instancier
 		int nb_defusers;					// Defuser cards à instancier
 
-		// Variable de management
-		std::vector<Player*> players;		// Ensemble des joueurs participants
-		std::vector<Card*> full_deck;		// Ensemble des cartes restantes
-
-		// Variables de monitoring
+		// Variables de management
 		int nb_round;						// Nombre de round dejà joués
 		int drew_cards_rd;					// Nombre de cartes tirées dans le current round
 		int def_found;						// Nombre de defuser trouvés en tout 
@@ -32,8 +32,10 @@ class Game {
 		void fill_players(std::vector<std::string> real_players);	// Instancie tous les joueurs réels et complète avec des bots
 		void deal();												// Distribue les cartes encore en jeu, actualise nb_round, drew_cards_rd
 
-		void draw(Player* a, Player* b, int card);					// pa pioche une carte chez pb, puis deal() si fin du round
-		void test_draw(int a, int b, int c);						// draw avec des indices, utilise game::draw(Player*, Player*, int)
+		bool draw(Player* a, Player* b, int card);					// pa pioche une carte chez pb, puis deal() si fin du round
+		bool test_draw(int a, int b, int c);						// draw avec des indices, utilise game::draw(Player*, Player*, int)
 
 		std::string to_string();
+
+		void play();												// Joue la partie du début à la fin
 };

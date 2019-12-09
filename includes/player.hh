@@ -29,4 +29,6 @@ class Player {
 		Card* get_card(int card);				// Renvoie un pointeur sur une carte de son propre deck 
 
 		std::string to_string(void);
+
+		int get_size_deck() const;
 };
