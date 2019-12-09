@@ -16,7 +16,7 @@ int main(int argc, char * argv[]) {
 	// real_players.push_back("Marc");
 	// real_players.push_back("Théo");
 
-	Game g1(4, real_players);
+	Game g1(6, real_players);
 
 	g1.play();
 

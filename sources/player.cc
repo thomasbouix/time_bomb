@@ -40,13 +40,14 @@ std::string Player::get_name(void) const {
 
 std::string Player::to_string() {
 
-	std::string res = this->get_name();
+	std::string res = this->get_name() + " : ";
 
-	if (color) res = res + ", RED : \n";
-	else res = res + ", BLUE : \n"; 
+	// if (color) res = res + ", RED : \n";
+	// else res = res + ", BLUE : \n"; 
 
 	for (std::vector<Card*>::iterator it = deck.begin(); it != deck.end(); it++) {
-		res = res + (*it)->to_string() + " / ";
+		// res = res + (*it)->to_string() + " / ";
+		res += "* / ";
 	}
 	res = res.substr(0, res.size() - 2);
 	return res + '\n';

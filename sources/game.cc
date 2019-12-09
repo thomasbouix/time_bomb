@@ -153,25 +153,26 @@ void Game::fill_players(std::vector<std::string> real_players) {
 
 std::string Game::to_string() {
 
+	std::string res = "=============\n";
+	
+	// Affiche full_deck
+	/*
 	int safeties = 0;
 	int defusers = 0;
 	int bomb = 0;
-
-	std::string res = "=============\n";
-	res += "GAME :\n";
-	
 	for (std::vector<Card*>::iterator it = full_deck.begin(); it != full_deck.end(); it++) {
 		res = res + (*it)->to_string() + " / ";
 		if (typeid(**it) == typeid(Safety)) safeties ++;
 		else if (typeid(**it) == typeid(Defuser)) defusers++;
 		else if(typeid(**it) == typeid(Bomb)) bomb++;
 	}
+	*/
 
 	res = res.substr(0, res.size() - 2);
 	// res += "Safeties = " + std::to_string(safeties);
 	// res += "; Defusers = " + std::to_string(defusers);
 	// res += "; Bomb = " + std::to_string(bomb);
-	res += "\n===";
+	// res += "\n===";
 	res += "\nRound n° : " + std::to_string(nb_round);
 	res += "\nCards drew in this round : " + std::to_string(drew_cards_rd);
 	res += "\nDefusers found : " + std::to_string(def_found); 
@@ -180,7 +181,7 @@ std::string Game::to_string() {
 	for (std::vector<Player*>::iterator it = players.begin(); it != players.end(); it++) {
 		res = res + (*it)->to_string() + '\n';
 	}
-
+	res = res.substr(0, res.size() - 1);
 	res += "=============\n";
 	return res;
 }
@@ -290,10 +291,15 @@ void Game::play() {
 		std::cin >> target;
 		std::cin >> c;
 
+		if (target == next_player->get_name()) {
+			std::cout << "You can not draw your own card\n";
+			continue;
+		}
+
 		if(play_draw(next_player, target, c))
 			drew_cards_rd++;
 		else 
-			std::cout << "No cards to draw !";
+			std::cout << "No cards to draw !\n";
 
 		if (drew_cards_rd == nb_players) {
 			std::cout << "END ROUND\n";
@@ -336,6 +342,7 @@ bool Game::play_draw(Player* nxt, std::string target, int c) {
 
 bool Game::test_draw(int a, int b, int c) {
 
+	// Empeche les seg fault
 	int res_a = a % players.size();
 	int res_b = b % players.size();
 

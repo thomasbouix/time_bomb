@@ -32,6 +32,7 @@ class Game {
 		void fill_players(std::vector<std::string> real_players);	// Instancie tous les joueurs réels et complète avec des bots
 		void deal();												// Distribue les cartes encore en jeu, actualise nb_round, drew_cards_rd
 
+		// Les draw() renvoient true si elles réussissent le tirage
 		bool draw(Player* a, Player* b, int card);					// pa pioche une carte chez pb, puis deal() si fin du round
 		bool test_draw(int a, int b, int c);						// draw avec des indices, utilise game::draw(Player*, Player*, int)
 		bool play_draw(Player* nxt, std::string target, int card);	// fonction qu'utilise game::play()
