@@ -1,12 +1,17 @@
 #pragma once
 #include <typeinfo>
 #include <sstream>
+#include <string>
 #include "player.hh"
 #include "card.hh"
+#include "chatbox.hh"
 
 class Game {
 
 	private :
+
+		Chatbox* chat;
+
 		// Container
 		std::vector<Player*> players;		// Ensemble des joueurs participants
 		std::vector<Card*> full_deck;		// Ensemble des cartes restantes
@@ -21,15 +26,15 @@ class Game {
 		// Variables de management
 		int nb_round;						// Nombre de round dejà joués
 		int drew_cards_rd;					// Nombre de cartes tirées dans le current round
-		int def_found;						// Nombre de defuser trouvés en tout 
+		int def_found;						// Nombre de defuser trouvés en tout
 		int bomb_found;
-		Player * next_player;				// Joueur qui a la main 
+		Player * next_player;				// Joueur qui a la main
 
 	public :
-		Game(int nb_players, std::vector<std::string> real_players);
+		Game(int nb_players);
 		~Game();
 
-		void fill_deck();											// Instancie toutes les cartes du jeu 
+		void fill_deck();											// Instancie toutes les cartes du jeu
 		void fill_players(std::vector<std::string> real_players);	// Instancie tous les joueurs réels et complète avec des bots
 		void deal();												// Distribue les cartes encore en jeu, actualise nb_round, drew_cards_rd
 

@@ -9,7 +9,17 @@
 #include "../includes/weak.hh"
 #include "../includes/strong.hh"
 
-Game::Game(int nb_players, std::vector<std::string> real_players) {
+
+Game::Game(int nb_players) {
+
+	int port;
+
+	std::cout << "Numéro de port:";
+	std::cin >> port;
+
+	this->chat = new Chatbox(port,nb_players);
+	(*chat).print_clients();
+	(*chat).broadcast_message("Nous allons commencer NOOOOW\n"); // erreur ICI
 
 	this->nb_players = nb_players;
 	this->nb_round = 0;
@@ -44,7 +54,7 @@ Game::Game(int nb_players, std::vector<std::string> real_players) {
 	}
 
 	fill_deck();
-	fill_players(real_players);
+	fill_players((*chat).get_name_players());
 }
 
 Game::~Game() {
@@ -85,7 +95,7 @@ void Game::fill_deck() {
 					defusers_done++; cards_done++;
 				}
 				break;
-			case 2 : 
+			case 2 :
 				if (bomb_done < 1) {
 					full_deck.push_back(new Bomb());
 					bomb_done++; cards_done++;
@@ -113,7 +123,7 @@ void Game::fill_players(std::vector<std::string> real_players) {
 					players.push_back(new Real(BLUE, real_players[players_done]));
 					// std::cout << "Blue added : " << real_players[players_done] << '\n';
 					blue_done++; players_done++;
-				} 
+				}
 				break;
 			case RED :
 				if (red_done < nb_red) {
@@ -136,7 +146,7 @@ void Game::fill_players(std::vector<std::string> real_players) {
 					players.push_back(new Weak(BLUE));
 					// std::cout << "Blue Bot added" << '\n';
 					blue_done++; players_done++;
-				} 
+				}
 				break;
 			case RED :
 				if (red_done < nb_red) {
@@ -148,13 +158,13 @@ void Game::fill_players(std::vector<std::string> real_players) {
 			default :
 				return;
 		}
-	} 
+	}
 }
 
 std::string Game::to_string() {
 
 	std::string res = "=============\n";
-	
+
 	// Affiche full_deck
 	/*
 	int safeties = 0;
@@ -175,9 +185,9 @@ std::string Game::to_string() {
 	// res += "\n===";
 	res += "\nRound n° : " + std::to_string(nb_round);
 	res += "\nCards drew in this round : " + std::to_string(drew_cards_rd);
-	res += "\nDefusers found : " + std::to_string(def_found); 
+	res += "\nDefusers found : " + std::to_string(def_found);
 	res += "\n===\n";
-	
+
 	for (std::vector<Player*>::iterator it = players.begin(); it != players.end(); it++) {
 		res = res + (*it)->to_string() + '\n';
 	}
@@ -199,17 +209,17 @@ void Game::deal() {
 	int * deck_aux = new int[full_deck.size()]();
 	// Nombre de cartes restantes à distribuer
 	int nb_to_deal = full_deck.size();
-	// Joueur à servir 
+	// Joueur à servir
 	int i_player = 0;
 
 	while (nb_to_deal != 0) {
-		
+
 		int card_to_deal = rand() % nb_to_deal; 	// selectionne une carte à distribuer parmis les 0
 		int i_deck = 0; 							// parcours le deck jusqu'à atteindre la carte à distribuer
 		int i_card_to_deal = 0; 					// parcours les cartes restantes (=>0)
-	
+
 		// On se positionne sur le premier 0
-		while(deck_aux[i_deck] == 1) 
+		while(deck_aux[i_deck] == 1)
 			i_deck++;
 
 		// Trouve l'indice de la carte à distribuer
@@ -221,11 +231,11 @@ void Game::deal() {
 
 		players[i_player]->add_card(full_deck[i_deck]); // Distribue la carte
 
-		if (i_player == nb_players - 1) 
+		if (i_player == nb_players - 1)
 			i_player = 0;
-		else 
+		else
 			i_player++;
-		
+
 		deck_aux[i_deck] = 1; // Met à jour le tableau auxilliaire
 		nb_to_deal--;
 	}
@@ -244,22 +254,45 @@ void Game::play() {
 
 		std::cout << to_string();
 
-		std::string target;
-		int c;
+		std::string target, drawer,action;
+		int card;
 
-		std::cout << next_player->get_name() << ", your turn to play :\n";
+		(*chat).broadcast_message(next_player->get_name() + ", your turn to play :\n");
+		//std::cout << next_player->get_name() << ", your turn to play :\n";
 
-		std::cin >> target;
-		std::cin >> c;
+		//std::cin >> target;
+		//std::cin >> c;
 
-		if (target == next_player->get_name()) {
+		while(global_buffer.size() == 0);
+
+		std::stringstream ss(global_buffer);
+		std::string message;
+		while (getline(ss, message, '\n')){
+			std::transform(message.begin(), message.end(), message.begin(), tolower);
+			std::string::size_type pos = message.find("draw");
+			if(pos != std::string::npos){
+
+				std::stringstream iss(message);
+
+				iss >> drawer >> action >> target >> card;  // extraction data
+
+				drawer = drawer.substr(0, drawer.length()-1);	// retire les deux points
+
+				if(action == "draw" && target != next_player->get_name() && drawer == next_player->get_name())
+					break;
+
+			}
+		}
+		global_buffer = "";
+
+		/*if (target == next_player->get_name()) {
 			std::cout << "You can not draw your own card\n";
 			continue;
-		}
+		}*/
 
-		if(play_draw(next_player, target, c))
+		if(play_draw(next_player, target, card))
 			drew_cards_rd++;
-		else 
+		else
 			std::cout << "No cards to draw !\n";
 
 		if (drew_cards_rd == nb_players) {
@@ -275,7 +308,7 @@ void Game::play() {
 		std::cout << "BOOM ! So many smoke !\n";
 	else if (def_found == nb_defusers)
 		std::cout << "Bomb defused !\n";
-	else 
+	else
 		std::cout << "No more rounds !\n";
 
 	std::cout << "END GAME\n";
@@ -312,7 +345,7 @@ bool Game::draw(Player* a, Player* b, int card) {
 	 	}
 	}
 
-	// Supprime l'objet et donc aussi le pointeur du game::full_deck 
+	// Supprime l'objet et donc aussi le pointeur du game::full_deck
 	delete removed_card;
 
 	next_player = b;

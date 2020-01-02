@@ -6,12 +6,12 @@ CC=g++
 CCFLAGS= -Wall -Werror -std=c++11 -g
 SRC= $(wildcard sources/*.cc)
 OBJ= $(SRC:.cc=.o)
-EXEC= time_bomb 
+EXEC= time_bomb
 
 all: $(EXEC)
 
 $(EXEC): $(OBJ)
-	$(CC) $(LIBFLAGS) $^ -o $@
+	$(CC) $(LIBFLAGS) $^ -o $@ -lpthread
 
 %.o: %.cc
 	$(CC) $(CCFLAGS) -o $@ -c $<
@@ -22,5 +22,3 @@ $(EXEC): $(OBJ)
 
 clean:
 	rm -f $(OBJ) $(EXEC)
-
-
