@@ -1,4 +1,4 @@
-#include "../includes/bomb.hh"
+#include "../../includes/bomb.hh"
 
 Bomb::Bomb(){}
 

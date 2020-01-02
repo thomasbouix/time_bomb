@@ -4,7 +4,7 @@
 
 CC=g++
 CCFLAGS= -Wall -Werror -std=c++11 -g
-SRC= $(wildcard sources/*.cc)
+SRC= $(wildcard sources/server/*.cc)
 OBJ= $(SRC:.cc=.o)
 EXEC= timebomb_serv
 

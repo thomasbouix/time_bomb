@@ -1,4 +1,4 @@
-#include "../includes/bot.hh"
+#include "../../includes/bot.hh"
 
 Bot::Bot() : Player() {}
 

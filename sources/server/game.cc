@@ -1,4 +1,4 @@
-#include "../includes/game.hh"
+#include "../../includes//game.hh"
 
 Game::Game(int nb_players) {
 

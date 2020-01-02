@@ -1,4 +1,4 @@
-#include "../includes/weak.hh"
+#include "../../includes/weak.hh"
 
 Weak::Weak() : Bot() {}
 

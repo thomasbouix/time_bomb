@@ -1,4 +1,4 @@
-#include "../includes/strong.hh"
+#include "../../includes/strong.hh"
 
 Strong::Strong() : Bot() {}
 
