@@ -255,7 +255,6 @@ void Game::play() {
 		// Affichage de la partie chez tous les joueurs
 
 		std::cout << to_string();
-		(*chat).broadcast_message(to_string());	// ==> ERREUR IN BINDING
 
 		std::string target, drawer,action;
 		int card;
@@ -293,8 +292,10 @@ void Game::play() {
 			continue;
 		}*/
 
-		if(play_draw(next_player, target, card))
+		if(play_draw(next_player, target, card)) {
+			(*chat).broadcast_message(to_string());
 			drew_cards_rd++;
+		}
 		else
 			std::cout << "No cards to draw !\n";
 
