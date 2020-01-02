@@ -14,7 +14,7 @@ void send_message(int server_port, std::string server_ip, std::string message){
 	struct sockaddr_in server_addr;
 	std::string buffer,name;
 
-	client_socket = socket(AF_INET, SOCK_STREAM, 0);
+	client_socket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 	if(client_socket < 0) error("[-]Error in connection");
 
 	memset(&server_addr, '\0', sizeof(server_addr));
@@ -27,6 +27,7 @@ void send_message(int server_port, std::string server_ip, std::string message){
 	n = write(client_socket,message.c_str(),message.size());
   if (n < 0) error("ERROR writing to socket");
 
+	close(client_socket);
 }
 
 void fn_serveur_tcp(int cli_sockfd, std::string name){
@@ -108,7 +109,7 @@ void Chatbox::print_clients(){
 
 void Chatbox::broadcast_message(std::string message){
 	for(auto& x : clients){
-  //	if((*x).get_name() == (*x).get_name()) SI je met ça, ça me met que c'est une erreur de bind du client
+  	if((*x).get_name() == (*x).get_name()) //SI je met ça, ça me met que c'est une erreur de bind du client
 			send_message((*x).get_port(),(*x).get_ip(),message);
 	}
 }
