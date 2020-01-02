@@ -1,5 +1,6 @@
 #pragma once
 #include <typeinfo>
+#include <sstream>
 #include "player.hh"
 #include "card.hh"
 
@@ -36,6 +37,7 @@ class Game {
 		bool draw(Player* a, Player* b, int card);					// pa pioche une carte chez pb, puis deal() si fin du round
 		bool test_draw(int a, int b, int c);						// draw avec des indices, utilise game::draw(Player*, Player*, int)
 		bool play_draw(Player* nxt, std::string target, int card);	// fonction qu'utilise game::play()
+		bool draw(std::string message);								// draw à partir du buffer venant du chat
 
 		std::string to_string();
 

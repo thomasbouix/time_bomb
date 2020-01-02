@@ -232,45 +232,6 @@ void Game::deal() {
 	delete[] deck_aux;
 }
 
-bool Game::draw(Player* a, Player* b, int card) {
-
-	// Pas de carte à piocher
-	if (b->get_size_deck() == 0) {
-		return false;
-	}
-
-	Card * removed_card = b->get_card(card);	// Pointeur sur la carte à supprimer
-
-	if (typeid(*removed_card) == typeid(Safety)) {
-		std::cout << "Safety found !\n";
-	}
-	else if (typeid(*removed_card) == typeid(Defuser)) {
-		std::cout << "Defuser found !\n";
-		def_found++;
-	}
-	else if (typeid(*removed_card) == typeid(Bomb)) {
-		std::cout << "Bomb found !\n";
-		bomb_found++;
-	}
-
-	a->draw(b, card);	// Supprime le pointeur du player::deck
-
-	 // Supprime le pointeur du game::full_deck
-	for (std::vector<Card*>::iterator it = full_deck.begin(); it != full_deck.end(); it++) {
-		if (*it == removed_card) {
-	 		full_deck.erase(it);
-	 		break;
-	 	}
-	}
-
-	// Supprime l'objet et donc aussi le pointeur du game::full_deck 
-	delete removed_card;
-
-	next_player = b;
-
-	return true;
-}
-
 void Game::play() {
 
 	deal();
@@ -320,6 +281,45 @@ void Game::play() {
 	std::cout << "END GAME\n";
 }
 
+bool Game::draw(Player* a, Player* b, int card) {
+
+	// Pas de carte à piocher
+	if (b->get_size_deck() == 0) {
+		return false;
+	}
+
+	Card * removed_card = b->get_card(card);	// Pointeur sur la carte à supprimer
+
+	if (typeid(*removed_card) == typeid(Safety)) {
+		std::cout << "Safety found !\n";
+	}
+	else if (typeid(*removed_card) == typeid(Defuser)) {
+		std::cout << "Defuser found !\n";
+		def_found++;
+	}
+	else if (typeid(*removed_card) == typeid(Bomb)) {
+		std::cout << "Bomb found !\n";
+		bomb_found++;
+	}
+
+	a->draw(b, card);	// Supprime le pointeur du player::deck
+
+	 // Supprime le pointeur du game::full_deck
+	for (std::vector<Card*>::iterator it = full_deck.begin(); it != full_deck.end(); it++) {
+		if (*it == removed_card) {
+	 		full_deck.erase(it);
+	 		break;
+	 	}
+	}
+
+	// Supprime l'objet et donc aussi le pointeur du game::full_deck 
+	delete removed_card;
+
+	next_player = b;
+
+	return true;
+}
+
 bool Game::play_draw(Player* nxt, std::string target, int c) {
 
 	Player* t = NULL;
@@ -347,4 +347,37 @@ bool Game::test_draw(int a, int b, int c) {
 	int res_b = b % players.size();
 
 	return draw(players[res_a], players[res_b], c);
+}
+
+bool Game::draw(std::string message) {
+
+	std::string sdrawer, starget, action;
+	int card;
+
+	std::stringstream iss(message);
+
+	iss >> sdrawer >> action >> starget >> card;  // extraction data
+
+	sdrawer = sdrawer.substr(0, sdrawer.length()-1);	// retire les deux points
+
+	Player * pdrawer;
+	Player * ptarget;
+
+	// recherche du tireur
+	for (std::vector<Player*>::iterator it = players.begin(); it != players.end(); it++) {
+		if ((*it)->get_name() == sdrawer) {
+			pdrawer = *it;
+			break;
+		}
+	}
+
+	// recherche de la cible
+	for (std::vector<Player*>::iterator it = players.begin(); it != players.end(); it++) {
+		if ((*it)->get_name() == starget) {
+			ptarget = *it;
+			break;
+		}
+	}
+
+	return draw(pdrawer, ptarget ,card);
 }
