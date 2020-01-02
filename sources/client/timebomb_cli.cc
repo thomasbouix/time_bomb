@@ -81,21 +81,40 @@ void client_tcp(std::string server_ip, int server_port, std::string name,std::st
 }
 
 
-int main(){
-	std::string server_ip,client_ip,name;
+int main(int argc, char * argv[]){
+
+	// <server ip> <server port> <client ip> <client port> <name>
+
+	if (argc != 4) {
+		std::cout << "error in arguments : " << std::endl;
+		std::cout << "<server port> <client port> <name>" << std::endl;
+		exit(0);
+	}
+
+	std::string server_ip,client_ip;
 	int server_port,client_port;
+	std::string str_serv(argv[1]);
+	std::string str_cli(argv[2]);
+	std::string name(argv[3]);
+
+	server_port = std::stoi(str_serv);
+	client_port = std::stoi(str_cli);
 	server_ip = "127.0.0.1";
 	client_ip = "127.0.0.1";
 	//std::cout << "Adresse IP Serveur:";
 	//std::cin >> server_ip;
-	std::cout << "Numéro de Port Serveur:";
-	std::cin >> server_port;
+	// std::cout << "Numéro de Port Serveur:";
+	// std::cin >> server_port;
 	//std::cout << "Adresse IP Client:";
 	//std::cin >> client_ip;
-	std::cout << "Numéro de Port Client:";
-	std::cin >> client_port;
-	std::cout << "Entrez votre nom:";
-	std::cin >> name;
+	// std::cout << "Numéro de Port Client:";
+	// std::cin >> client_port;
+	// std::cout << "Entrez votre nom:";
+	// std::cin >> name;
+
+	std::cout << server_port << std::endl;
+	std::cout << client_port << std::endl;
+	std::cout << name << std::endl;
 
 	std::stringstream message;
 	message << client_ip << "\n" << client_port << "\n" << name << "\n";

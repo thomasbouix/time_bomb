@@ -252,7 +252,10 @@ void Game::play() {
 
 	while (!bomb_found && (def_found < nb_defusers) && nb_round < 4) {
 
+		// Affichage de la partie chez tous les joueurs
+
 		std::cout << to_string();
+		(*chat).broadcast_message(to_string());	// ==> ERREUR IN BINDING
 
 		std::string target, drawer,action;
 		int card;
