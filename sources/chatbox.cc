@@ -8,7 +8,23 @@ void error(std::string message){
 	exit(1);
 }
 
-void send_message(int server_port, std::string server_ip, std::string message){
+void fn_serveur_tcp(int cli_sockfd, std::string name){
+	char buffer[1024];
+	while(1){
+		if(recv(cli_sockfd,buffer, 1024, 0) > 0){
+			std::string str(buffer);
+			for(auto& x : clients){
+				if(name != ((*x).get_name())) 
+					Chatbox::send_message((*x).get_port(),(*x).get_ip(),name + ":" + str);
+			}
+			global_buffer = global_buffer + name + ": " + str + "\n";
+			bzero(buffer, sizeof(buffer));
+		}
+	}
+	close(cli_sockfd);
+}
+
+void Chatbox::send_message(int server_port, std::string server_ip, std::string message){
 
 	int client_socket, ret, n;
 	struct sockaddr_in server_addr;
@@ -28,21 +44,6 @@ void send_message(int server_port, std::string server_ip, std::string message){
   if (n < 0) error("ERROR writing to socket");
 
 	close(client_socket);
-}
-
-void fn_serveur_tcp(int cli_sockfd, std::string name){
-	char buffer[1024];
-	while(1){
-		if(recv(cli_sockfd,buffer, 1024, 0) > 0){
-			std::string str(buffer);
-			for(auto& x : clients){
-				if(name != ((*x).get_name())) send_message((*x).get_port(),(*x).get_ip(),name + ":" + str);
-			}
-			global_buffer = global_buffer + name + ": " + str + "\n";
-			bzero(buffer, sizeof(buffer));
-		}
-	}
-	close(cli_sockfd);
 }
 
 Chatbox::Chatbox(int port, int number_players):port(port),number_players(number_players){
@@ -110,6 +111,30 @@ void Chatbox::print_clients(){
 void Chatbox::broadcast_message(std::string message){
 	for(auto& x : clients){
   	if((*x).get_name() == (*x).get_name()) //SI je met ça, ça me met que c'est une erreur de bind du client
-			send_message((*x).get_port(),(*x).get_ip(),message);
+			Chatbox::send_message((*x).get_port(),(*x).get_ip(),message);
 	}
+}
+
+std::string Chatbox::get_ip_client(std::string client_name) {
+
+	for(auto& x : clients) {
+		if ((*x).get_name() == client_name) {
+			return (*x).get_ip();
+		}
+	}
+
+	std::cout << "error in chatbox::get_ip_client()" << std::endl;
+	return "";
+}
+
+int Chatbox::get_port_client(std::string client_name) {
+
+	for(auto& x : clients) {
+		if ((*x).get_name() == client_name) {
+			return (*x).get_port();
+		}
+	}
+
+	std::cout << "error in chatbox::get_port_client()" << std::endl;
+	return 0;
 }

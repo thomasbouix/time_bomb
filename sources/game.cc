@@ -1,15 +1,5 @@
 #include "../includes/game.hh"
 
-#include "../includes/safety.hh"
-#include "../includes/defuser.hh"
-#include "../includes/bomb.hh"
-
-#include "../includes/player.hh"
-#include "../includes/real.hh"
-#include "../includes/weak.hh"
-#include "../includes/strong.hh"
-
-
 Game::Game(int nb_players) {
 
 	int port;
@@ -240,6 +230,19 @@ void Game::deal() {
 		nb_to_deal--;
 	}
 	delete[] deck_aux;
+
+	// montre deck + couleur à chaque joueur (lui envoie sa fonction to_string())
+	for(auto& x : players) {
+
+		std::string name = (*x).get_name();
+
+		int server_port = (*chat).get_port_client(name);
+		std::string server_ip = (*chat).get_ip_client(name);
+
+		std::string message = (*x).to_string();
+
+		Chatbox::send_message(server_port, server_ip, message);
+	}
 }
 
 void Game::play() {

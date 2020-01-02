@@ -2,9 +2,18 @@
 #include <typeinfo>
 #include <sstream>
 #include <string>
-#include "player.hh"
-#include "card.hh"
+
 #include "chatbox.hh"
+
+#include "card.hh"
+#include "safety.hh"
+#include "defuser.hh"
+#include "bomb.hh"
+
+#include "player.hh"
+#include "real.hh"
+#include "weak.hh"
+#include "strong.hh"
 
 class Game {
 

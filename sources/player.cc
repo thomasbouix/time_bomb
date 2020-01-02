@@ -40,7 +40,14 @@ std::string Player::get_name(void) const {
 
 std::string Player::to_string() {
 
-	std::string res = this->get_name() + " : ";
+	std::string str_color;
+
+	if (color)
+		str_color = "red";
+	else 
+		str_color = "blue";
+
+	std::string res = this->get_name() + "(" + str_color + ") : ";
 
 	// if (color) res = res + ", RED : \n";
 	// else res = res + ", BLUE : \n"; 

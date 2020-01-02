@@ -19,15 +19,20 @@ extern std::vector<Client *> clients;
 
 class Chatbox
 {
-  private:
-    int port,number_players;
-    int sockfd;
+	private:
+		int port,number_players;
+		int sockfd;
 
-  public:
-    Chatbox(int port, int number_players);
-    void print_clients();
-    void broadcast_message(std::string message);
-    std::vector<std::string> get_name_players();
-    ~Chatbox();
+	public:
+		Chatbox(int port, int number_players);
+		~Chatbox();
+
+		void print_clients();
+		static void send_message(int server_port, std::string server_ip, std::string message);
+		void broadcast_message(std::string message);
+		std::vector<std::string> get_name_players();
+
+		std::string get_ip_client(std::string client_name);
+		int get_port_client(std::string client_name);
 
 };
