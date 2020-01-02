@@ -6,9 +6,12 @@ CC=g++
 CCFLAGS= -Wall -Werror -std=c++11 -g
 SRC= $(wildcard sources/*.cc)
 OBJ= $(SRC:.cc=.o)
-EXEC= time_bomb
+EXEC= timebomb_serv
 
-all: $(EXEC)
+all: $(EXEC) timebomb_client
+
+timebomb_client :
+	g++ $(CCFLAGS) sources/client/timebomb_cli.cc -o timebomb_cli -lpthread
 
 $(EXEC): $(OBJ)
 	$(CC) $(LIBFLAGS) $^ -o $@ -lpthread
@@ -21,4 +24,4 @@ $(EXEC): $(OBJ)
 -include .depends
 
 clean:
-	rm -f $(OBJ) $(EXEC)
+	rm -f $(OBJ) $(EXEC) timebomb_cli
