@@ -253,9 +253,9 @@ void Game::play() {
 
 	std::string line = "";
 
-	while (!bomb_found && (def_found < nb_defusers) && nb_round < 4) {
+	(*chat).broadcast_message(to_string());	// affiche la partie pour tous les joueurs
 
-		// Affichage de la partie chez tous les joueurs
+	while (!bomb_found && (def_found < nb_defusers) && nb_round < 4) {
 
 		std::cout << to_string();
 
@@ -283,9 +283,11 @@ void Game::play() {
 
 				drawer = drawer.substr(0, drawer.length()-1);	// retire les deux points
 
-				if(action == "draw" && target != next_player->get_name() && drawer == next_player->get_name())
+				if (action == "draw" && target != next_player->get_name() && drawer == next_player->get_name()) {
+					// j'ai l'impression que les joueurs non désignés peuvent tirer -- thomas
+					// std::cout << "le joueur qui tire est : " << drawer << std::endl; 
 					break;
-
+				}
 			}
 		}
 		global_buffer = "";
@@ -296,7 +298,7 @@ void Game::play() {
 		}*/
 
 		if(play_draw(next_player, target, card)) {
-			(*chat).broadcast_message(to_string());
+			(*chat).broadcast_message(to_string());	// affiche la partie pour tous les joueurs à chaque tirage
 			drew_cards_rd++;
 		}
 		else
@@ -321,6 +323,7 @@ void Game::play() {
 	std::cout << "END GAME\n";
 }
 
+// utilisée par game::play_draw
 bool Game::draw(Player* a, Player* b, int card) {
 
 	// Pas de carte à piocher
@@ -360,6 +363,7 @@ bool Game::draw(Player* a, Player* b, int card) {
 	return true;
 }
 
+// utilisée dans game::play()
 bool Game::play_draw(Player* nxt, std::string target, int c) {
 
 	Player* t = NULL;
@@ -380,6 +384,7 @@ bool Game::play_draw(Player* nxt, std::string target, int c) {
 	return draw(nxt, t, c);
 }
 
+// non utilisée
 bool Game::test_draw(int a, int b, int c) {
 
 	// Empeche les seg fault
@@ -389,6 +394,7 @@ bool Game::test_draw(int a, int b, int c) {
 	return draw(players[res_a], players[res_b], c);
 }
 
+// non utilisée 
 bool Game::draw(std::string message) {
 
 	std::string sdrawer, starget, action;
