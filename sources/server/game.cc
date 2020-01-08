@@ -283,20 +283,23 @@ void Game::play() {
 
 				drawer = drawer.substr(0, drawer.length()-1);	// retire les deux points
 
+
 				if (action == "draw" && target != next_player->get_name() && drawer == next_player->get_name()) {
 					// j'ai l'impression que les joueurs non désignés peuvent tirer -- thomas
-					// std::cout << "le joueur qui tire est : " << drawer << std::endl; 
+					std::cout << "le joueur qui tire est : " << drawer << std::endl; 
 					break;
 				}
+				// pour les test, à retirer après
+				else
+					std::cout << "pas de tirage, commande invalide" << std::endl;
 			}
 		}
-		global_buffer = "";
 
+		global_buffer = "";
 		/*if (target == next_player->get_name()) {
 			std::cout << "You can not draw your own card\n";
 			continue;
 		}*/
-
 		if(play_draw(next_player, target, card)) {
 			(*chat).broadcast_message(to_string());	// affiche la partie pour tous les joueurs à chaque tirage
 			drew_cards_rd++;

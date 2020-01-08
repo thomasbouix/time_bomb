@@ -40,9 +40,9 @@ std::string Player::get_name(void) const {
 
 std::string Player::get_color(void) {
 
-	if (BLUE)
+	if (color == BLUE)
 		return "blue";
-	else if (RED)
+	else if (color == RED)
 		return "red";
 	
 	return "unknown color";
