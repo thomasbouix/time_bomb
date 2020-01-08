@@ -38,19 +38,19 @@ std::string Player::get_name(void) const {
 	return name;
 }
 
+std::string Player::get_color(void) {
+
+	if (BLUE)
+		return "blue";
+	else if (RED)
+		return "red";
+	
+	return "unknown color";
+}
+
 std::string Player::to_string() {
 
-	std::string str_color;
-
-	if (color)
-		str_color = "red";
-	else 
-		str_color = "blue";
-
-	std::string res = this->get_name() + "(" + str_color + ") : ";
-
-	// if (color) res = res + ", RED : \n";
-	// else res = res + ", BLUE : \n"; 
+	std::string res = this->get_name() + " : ";
 
 	for (std::vector<Card*>::iterator it = deck.begin(); it != deck.end(); it++) {
 		// res = res + (*it)->to_string() + " / ";

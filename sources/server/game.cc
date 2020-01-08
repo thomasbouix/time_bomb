@@ -1,4 +1,4 @@
-#include "../../includes//game.hh"
+#include "../../includes/game.hh"
 
 Game::Game(int nb_players) {
 
@@ -9,7 +9,7 @@ Game::Game(int nb_players) {
 
 	this->chat = new Chatbox(port,nb_players);
 	(*chat).print_clients();
-	(*chat).broadcast_message("Nous allons commencer NOOOOW\n"); // erreur ICI
+	(*chat).broadcast_message("Let's get started now!\n"); // erreur ICI
 
 	this->nb_players = nb_players;
 	this->nb_round = 0;
@@ -231,7 +231,7 @@ void Game::deal() {
 	}
 	delete[] deck_aux;
 
-	// montre deck + couleur à chaque joueur (lui envoie sa fonction to_string())
+	// montre deck + couleur à chaque joueur
 	for(auto& x : players) {
 
 		std::string name = (*x).get_name();
@@ -239,7 +239,7 @@ void Game::deal() {
 		int server_port = (*chat).get_port_client(name);
 		std::string server_ip = (*chat).get_ip_client(name);
 
-		std::string message = (*x).to_string();
+		std::string message = name + ", your color is " + (*x).get_color() + "\n";
 
 		Chatbox::send_message(server_port, server_ip, message);
 	}
