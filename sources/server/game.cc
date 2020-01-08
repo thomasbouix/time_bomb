@@ -285,16 +285,18 @@ void Game::play() {
 
 
 				if (action == "draw" && target != next_player->get_name() && drawer == next_player->get_name()) {
-					// j'ai l'impression que les joueurs non désignés peuvent tirer -- thomas
-					std::cout << "le joueur qui tire est : " << drawer << std::endl; 
+						// on ne rentre pas ici si le joueur tireur est le mauvais
+						std::cout << "le joueur qui tire est : " << drawer << std::endl; 
 					break;
 				}
-				// pour les test, à retirer après
+				// pour les tests, à retirer après
 				else
+					// on rentre ici quand le nom est incorrect
 					std::cout << "pas de tirage, commande invalide" << std::endl;
 			}
 		}
 
+		// on tente un tirage
 		global_buffer = "";
 		/*if (target == next_player->get_name()) {
 			std::cout << "You can not draw your own card\n";

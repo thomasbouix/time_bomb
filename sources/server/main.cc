@@ -1,7 +1,7 @@
 #include <iostream>
 #include <vector>
 
-#include "../../includes//game.hh"
+#include "../../includes/game.hh"
 
 std::string global_buffer;
 
