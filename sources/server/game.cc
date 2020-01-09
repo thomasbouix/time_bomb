@@ -60,6 +60,7 @@ Game::~Game() {
 	}
 }
 
+// instancie toutes les cartes du jeu
 void Game::fill_deck() {
 
 	srand(time(NULL));
@@ -97,6 +98,7 @@ void Game::fill_deck() {
 	}
 }
 
+// instancie tous les joueurs du jeu
 void Game::fill_players(std::vector<std::string> real_players) {
 	srand(time(NULL));
 
@@ -186,6 +188,7 @@ std::string Game::to_string() {
 	return res;
 }
 
+// Distribue les cartes et actualise les variables de jeu
 void Game::deal() {
 
 	// ======== On vide le deck de chaque joueur ========
@@ -247,6 +250,8 @@ void Game::deal() {
 
 void Game::play() {
 
+	bool can_draw;
+
 	deal();
 
 	next_player = players[0];
@@ -255,11 +260,13 @@ void Game::play() {
 
 	(*chat).broadcast_message(to_string());	// affiche la partie pour tous les joueurs
 
+	// déroulement de la partie
 	while (!bomb_found && (def_found < nb_defusers) && nb_round < 4) {
 
 		std::cout << to_string();
 
-		std::string target, drawer,action;
+		// Variables pour l'extraction des données du buffer réseau
+		std::string target, drawer, action;
 		int card;
 
 		(*chat).broadcast_message(next_player->get_name() + ", your turn to play :\n");
@@ -268,52 +275,49 @@ void Game::play() {
 		//std::cin >> target;
 		//std::cin >> c;
 
-		while(global_buffer.size() == 0);
+		while (global_buffer.size() == 0);		// attend de recevoir un message 
 
-		std::stringstream ss(global_buffer);
-		std::string message;
-		while (getline(ss, message, '\n')){
+		std::stringstream ss(global_buffer);	// permet d'utiliser global_buffer comme d'un stream
+		std::string message;					// une ligne du global_buffer
+
+		while (getline(ss, message, '\n')) {	// tant qu'il y a une ligne à lire dans le global_buffer
 			std::transform(message.begin(), message.end(), message.begin(), tolower);
 			std::string::size_type pos = message.find("draw");
-			if(pos != std::string::npos){
 
-				std::stringstream iss(message);
-
-				iss >> drawer >> action >> target >> card;  // extraction data
-
+			if( pos != std::string::npos ) {
+				std::stringstream iss(message);					// utilisation du message comme d'un stream
+				iss >> drawer >> action >> target >> card;  	// extraction data
 				drawer = drawer.substr(0, drawer.length()-1);	// retire les deux points
 
-
 				if (action == "draw" && target != next_player->get_name() && drawer == next_player->get_name()) {
-						// on ne rentre pas ici si le joueur tireur est le mauvais
-						std::cout << "le joueur qui tire est : " << drawer << std::endl; 
+					can_draw = true;
 					break;
 				}
-				// pour les tests, à retirer après
-				else
-					// on rentre ici quand le nom est incorrect
-					std::cout << "pas de tirage, commande invalide" << std::endl;
+				else {
+					can_draw = false;
+					(*chat).broadcast_message("admin:" + drawer + ", it is not your time to play!\n");
+					global_buffer = "";	// sinon bug
+				}
 			}
 		}
 
-		// on tente un tirage
-		global_buffer = "";
-		/*if (target == next_player->get_name()) {
-			std::cout << "You can not draw your own card\n";
-			continue;
-		}*/
-		if(play_draw(next_player, target, card)) {
-			(*chat).broadcast_message(to_string());	// affiche la partie pour tous les joueurs à chaque tirage
-			drew_cards_rd++;
-		}
-		else
-			std::cout << "No cards to draw !\n";
+		if(can_draw) {
+			can_draw = false;
+			global_buffer = "";
+			// On tente un tirage
+			if(play_draw(next_player, target, card)) {
+				(*chat).broadcast_message(to_string());	// affiche la partie pour tous les joueurs à chaque tirage
+				drew_cards_rd++;
+			}
+			else
+				std::cout << "No cards to draw !\n";
 
-		if (drew_cards_rd == nb_players) {
-			std::cout << "END ROUND\n";
-			drew_cards_rd = 0;
-			nb_round++;
-			deal();
+			if (drew_cards_rd == nb_players) {
+				std::cout << "END ROUND\n";
+				drew_cards_rd = 0;
+				nb_round++;
+				deal();
+			}
 		}
 	}
 
