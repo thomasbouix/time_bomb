@@ -254,7 +254,8 @@ void Game::play() {
 
 	deal();
 
-	next_player = players[0];
+	next_player = players[0];		// Joueur qui a la main
+	previous_player = players[0];	// Joueur qui vient de jouer
 
 	std::string line = "";
 
@@ -269,18 +270,15 @@ void Game::play() {
 		std::string target, drawer, action;
 		int card;
 
-		(*chat).broadcast_message(next_player->get_name() + ", your turn to play :\n");
-		//std::cout << next_player->get_name() << ", your turn to play :\n";
-
-		//std::cin >> target;
-		//std::cin >> c;
+		(*chat).broadcast_message("admin :" + next_player->get_name() + ", your turn to play :\n");
 
 		while (global_buffer.size() == 0);		// attend de recevoir un message 
 
 		std::stringstream ss(global_buffer);	// permet d'utiliser global_buffer comme d'un stream
 		std::string message;					// une ligne du global_buffer
 
-		while (getline(ss, message, '\n')) {	// tant qu'il y a une ligne à lire dans le global_buffer
+		// tant qu'il y a une ligne à lire dans le global_buffer
+		while (getline(ss, message, '\n')) {
 			std::transform(message.begin(), message.end(), message.begin(), tolower);
 			std::string::size_type pos = message.find("draw");
 
@@ -289,16 +287,21 @@ void Game::play() {
 				iss >> drawer >> action >> target >> card;  	// extraction data
 				drawer = drawer.substr(0, drawer.length()-1);	// retire les deux points
 
-				if (action == "draw" && target != next_player->get_name() && drawer == next_player->get_name()) {
+				if (action == "draw" && target != previous_player->get_name() && drawer == next_player->get_name()) {
 					can_draw = true;
 					break;
 				}
-				else if (action == "draw") {
+				else if (action == "draw" && drawer != next_player->get_name()) {
 					can_draw = false;
-					(*chat).broadcast_message("admin:" + drawer + ", it is not your time to play!\n");
+					(*chat).broadcast_message("admin :" + drawer + ", it is not your time to play!\n");
 					global_buffer = "";	// sinon bug
 				}
-				else {
+				else if (action == "draw" && target == previous_player->get_name()) {
+					can_draw = false;
+					(*chat).broadcast_message("admin :" + drawer + ", you can not draw your own father!\n");
+					global_buffer = "";	// sinon bug
+				}
+				else {	// message normal
 					can_draw = false;
 					global_buffer = "";
 				}
@@ -311,6 +314,7 @@ void Game::play() {
 			can_draw = false;
 			global_buffer = "";
 			// On tente un tirage
+
 			if(play_draw(next_player, target, card)) {
 				drew_cards_rd++;
 				(*chat).broadcast_message(to_string());	// affiche la partie pour tous les joueurs à chaque tirage
@@ -376,6 +380,7 @@ bool Game::draw(Player* a, Player* b, int card) {
 	delete removed_card;
 
 	next_player = b;
+	previous_player = a;
 
 	return true;
 }

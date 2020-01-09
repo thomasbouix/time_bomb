@@ -38,6 +38,7 @@ class Game {
 		int def_found;						// Nombre de defuser trouvés en tout
 		int bomb_found;
 		Player * next_player;				// Joueur qui a la main
+		Player * previous_player;			// Joueur qui vient de tirer
 
 	public :
 		Game(int nb_players);
@@ -48,7 +49,7 @@ class Game {
 		void deal();												// Distribue les cartes encore en jeu, actualise nb_round, drew_cards_rd
 
 		// Les draw() renvoient true si elles réussissent le tirage
-		bool draw(Player* a, Player* b, int card);					// pa pioche une carte chez pb, puis deal() si fin du round
+		bool draw(Player* a, Player* b, int card);					// pa pioche une carte chez pb, avec contrôle sur la sécurité
 		bool test_draw(int a, int b, int c);						// draw avec des indices, utilise game::draw(Player*, Player*, int)
 		bool play_draw(Player* nxt, std::string target, int card);	// fonction qu'utilise game::play()
 		bool draw(std::string message);								// draw à partir du buffer venant du chat
