@@ -287,27 +287,41 @@ void Game::play() {
 				iss >> drawer >> action >> target >> card;  	// extraction data
 				drawer = drawer.substr(0, drawer.length()-1);	// retire les deux points
 
-				if (action == "draw" && drawer == next_player->get_name() &&
-					target != previous_player->get_name() && target != next_player->get_name()) {
-					can_draw = true;
-					break;
+				// déclaration d'un tirage : 
+				if (action == "draw") {
+					// le joueur qui tire n'avait pas la main
+					if (drawer != next_player->get_name()) {
+						can_draw = false;
+						(*chat).broadcast_message("admin :" + drawer + ", it is not your time to play!\n");
+						global_buffer = "";	// sinon bug
+					}
+					// la target n'existe pas
+					else if (!is_a_player(target)) {
+						can_draw = false;
+						(*chat).broadcast_message("admin : this player does not exist\n");
+						global_buffer = "";
+					}
+					// le joueur tire sur son père
+					else if (target == previous_player->get_name()) {
+						can_draw = false;
+						(*chat).broadcast_message("admin :" + drawer + ", you can not draw your own father!\n");
+						global_buffer = "";	// sinon bug
+					}
+					// le joueur se tire lui-même
+					else if (target == next_player->get_name()) {
+						can_draw = false;
+						(*chat).broadcast_message("admin :" + drawer + ", you can not draw yourself!\n");
+						global_buffer = "";
+					}
+					// tirage légal
+					else if (drawer == next_player->get_name() && target != previous_player->get_name() 
+						&& target != next_player->get_name()) {
+						can_draw = true;
+						break;
+					}
 				}
-				else if (action == "draw" && drawer != next_player->get_name()) {
-					can_draw = false;
-					(*chat).broadcast_message("admin :" + drawer + ", it is not your time to play!\n");
-					global_buffer = "";	// sinon bug
-				}
-				else if (action == "draw" && target == previous_player->get_name()) {
-					can_draw = false;
-					(*chat).broadcast_message("admin :" + drawer + ", you can not draw your own father!\n");
-					global_buffer = "";	// sinon bug
-				}
-				else if (action == "draw" && target == next_player->get_name()) {
-					can_draw = false;
-					(*chat).broadcast_message("admin :" + drawer + ", you can not draw yourself!\n");
-					global_buffer = "";
-				}
-				else {	// message normal
+				// message normal
+				else {	
 					can_draw = false;
 					global_buffer = "";
 				}
@@ -334,7 +348,6 @@ void Game::play() {
 				nb_round++;
 				deal();
 				(*chat).broadcast_message(to_string()); // montre la nouvelle distribution
-
 			}
 		}
 	}
@@ -454,4 +467,14 @@ bool Game::draw(std::string message) {
 	}
 
 	return draw(pdrawer, ptarget ,card);
+}
+
+bool Game::is_a_player(std::string name) {
+
+	for (auto& x : players) {
+		if (x->get_name() == name)
+			return true;
+	}
+
+	return false;
 }

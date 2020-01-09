@@ -5,15 +5,15 @@
 
 #include "chatbox.hh"
 
-#include "card.hh"
-#include "safety.hh"
-#include "defuser.hh"
-#include "bomb.hh"
-
 #include "player.hh"
 #include "real.hh"
 #include "weak.hh"
 #include "strong.hh"
+
+#include "card.hh"
+#include "safety.hh"
+#include "defuser.hh"
+#include "bomb.hh"
 
 class Game {
 
@@ -57,4 +57,6 @@ class Game {
 		std::string to_string();
 
 		void play();												// Joue la partie du début à la fin
+		bool is_a_player(std::string name);							// vrai si le nom fourni est celui d'un joueur
+
 };
