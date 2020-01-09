@@ -41,7 +41,7 @@ class Game {
 		Player * previous_player;			// Joueur qui vient de tirer
 
 	public :
-		Game(int nb_players);
+		Game(int nb_players, int port);
 		~Game();
 
 		void fill_deck();											// Instancie toutes les cartes du jeu

@@ -6,22 +6,16 @@
 std::string global_buffer;
 
 int main(int argc, char * argv[]) {
-/*
-	std::vector<std::string> real_players;
 
-	real_players.push_back("aziz");
-	real_players.push_back("thomas");
-	real_players.push_back("ludovic");
-	real_players.push_back("eugène");
-	// real_players.push_back("marc");
-	// real_players.push_back("théo");
-*/
-	//Game g1(6, real_players);
+	if (argc != 3) {
+		std::cout << "error : <port server> <number of player>" << std::endl;
+		return -1;
+	}
 
-	//std::string message("aziz: draw thomas 1");
-
-	//g1.draw(message);
-	Game g1(4);
+	int port = atoi(argv[1]);
+	int n_player = atoi(argv[2]);
+	
+	Game g1(n_player, port);
 	g1.play();
 
 	return 0;

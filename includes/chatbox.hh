@@ -34,5 +34,4 @@ class Chatbox
 
 		std::string get_ip_client(std::string client_name);
 		int get_port_client(std::string client_name);
-
 };

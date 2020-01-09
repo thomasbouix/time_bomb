@@ -1,11 +1,6 @@
 #include "../../includes/game.hh"
 
-Game::Game(int nb_players) {
-
-	int port;
-
-	std::cout << "Numéro de port:";
-	std::cin >> port;
+Game::Game(int nb_players, int port) {
 
 	this->chat = new Chatbox(port,nb_players);
 	(*chat).print_clients();
@@ -301,17 +296,17 @@ void Game::play() {
 						(*chat).broadcast_message("admin : this player does not exist\n");
 						global_buffer = "";
 					}
-					// le joueur tire sur son père
-					else if (target == previous_player->get_name()) {
-						can_draw = false;
-						(*chat).broadcast_message("admin :" + drawer + ", you can not draw your own father!\n");
-						global_buffer = "";	// sinon bug
-					}
 					// le joueur se tire lui-même
 					else if (target == next_player->get_name()) {
 						can_draw = false;
 						(*chat).broadcast_message("admin :" + drawer + ", you can not draw yourself!\n");
 						global_buffer = "";
+					}
+					// le joueur tire sur son père
+					else if (target == previous_player->get_name()) {
+						can_draw = false;
+						(*chat).broadcast_message("admin :" + drawer + ", you can not draw your own father!\n");
+						global_buffer = "";	// sinon bug
 					}
 					// tirage légal
 					else if (drawer == next_player->get_name() && target != previous_player->get_name() 
