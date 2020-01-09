@@ -287,7 +287,8 @@ void Game::play() {
 				iss >> drawer >> action >> target >> card;  	// extraction data
 				drawer = drawer.substr(0, drawer.length()-1);	// retire les deux points
 
-				if (action == "draw" && target != previous_player->get_name() && drawer == next_player->get_name()) {
+				if (action == "draw" && drawer == next_player->get_name() &&
+					target != previous_player->get_name() && target != next_player->get_name()) {
 					can_draw = true;
 					break;
 				}
@@ -300,6 +301,11 @@ void Game::play() {
 					can_draw = false;
 					(*chat).broadcast_message("admin :" + drawer + ", you can not draw your own father!\n");
 					global_buffer = "";	// sinon bug
+				}
+				else if (action == "draw" && target == next_player->get_name()) {
+					can_draw = false;
+					(*chat).broadcast_message("admin :" + drawer + ", you can not draw yourself!\n");
+					global_buffer = "";
 				}
 				else {	// message normal
 					can_draw = false;
