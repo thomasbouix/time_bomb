@@ -234,7 +234,7 @@ void Game::deal() {
 	}
 	delete[] deck_aux;
 
-	// montre deck + couleur à chaque joueur
+	// montre couleur à chaque joueur
 	for(auto& x : players) {
 
 		std::string name = (*x).get_name();
@@ -293,12 +293,18 @@ void Game::play() {
 					can_draw = true;
 					break;
 				}
-				else {
+				else if (action == "draw") {
 					can_draw = false;
 					(*chat).broadcast_message("admin:" + drawer + ", it is not your time to play!\n");
 					global_buffer = "";	// sinon bug
 				}
+				else {
+					can_draw = false;
+					global_buffer = "";
+				}
 			}
+			else
+				global_buffer = "";	// sinon bug
 		}
 
 		if(can_draw) {
@@ -306,8 +312,8 @@ void Game::play() {
 			global_buffer = "";
 			// On tente un tirage
 			if(play_draw(next_player, target, card)) {
-				(*chat).broadcast_message(to_string());	// affiche la partie pour tous les joueurs à chaque tirage
 				drew_cards_rd++;
+				(*chat).broadcast_message(to_string());	// affiche la partie pour tous les joueurs à chaque tirage
 			}
 			else
 				std::cout << "No cards to draw !\n";
@@ -317,6 +323,8 @@ void Game::play() {
 				drew_cards_rd = 0;
 				nb_round++;
 				deal();
+				(*chat).broadcast_message(to_string()); // montre la nouvelle distribution
+
 			}
 		}
 	}
