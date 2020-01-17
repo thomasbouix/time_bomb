@@ -315,7 +315,7 @@ void Game::play() {
 						break;
 					}
 				}
-				// message normal
+				// message normal - pas d'action
 				else {	
 					can_draw = false;
 					global_buffer = "";
