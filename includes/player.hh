@@ -1,6 +1,10 @@
 #pragma once
 #include <vector>
+#include <typeinfo>
 #include "card.hh"
+#include "safety.hh"
+#include "defuser.hh"
+#include "bomb.hh"
 
 #define BLUE 0
 #define RED 1
@@ -32,4 +36,6 @@ class Player {
 		std::string get_color(void);
 
 		int get_size_deck() const;
+
+		std::string get_deck_str(void);			// renvoie un message de protocole de communication pour l'état du deck
 };

@@ -59,4 +59,5 @@ class Game {
 		void play();												// Joue la partie du début à la fin
 		bool is_a_player(std::string name);							// vrai si le nom fourni est celui d'un joueur
 
+		char last_card_drew;										// S D B
 };

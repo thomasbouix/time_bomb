@@ -75,7 +75,7 @@ void client_tcp(std::string server_ip, int server_port, std::string name,std::st
    		std::getline(std::cin, buffer,'\n');
 		write(client_socket,buffer.c_str(),buffer.size());
 		//if(buffer.size() > 0)
-			//send(client_socket,(char*)(buffer.c_str()), buffer.size(), 0);
+		//send(client_socket,(char*)(buffer.c_str()), buffer.size(), 0);
 	}
 
 }

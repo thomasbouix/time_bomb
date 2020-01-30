@@ -101,3 +101,20 @@ Card* Player::get_card(int card) {
 int Player::get_size_deck() const  {
 	return deck.size();
 }
+
+std::string Player::get_deck_str(void) {
+
+	std::string message = "F " + this->get_name();
+
+	for (auto& c : deck) {
+
+		if (typeid(*c) == typeid(Safety)) 
+			message += "S ";
+		else if (typeid(*c) == typeid(Defuser))
+			message += "D ";
+		else if (typeid(*c) == typeid(Bomb))
+			message += "B ";
+	}
+
+	return message;
+}

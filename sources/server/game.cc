@@ -150,8 +150,6 @@ void Game::fill_players(std::vector<std::string> real_players) {
 	// COMMUNICATION PROTOCOLE RESEAU
 	/* 
 	J nombre_joueur(int) nom1(str) nom2(str) // infos sur les joueurs : J 4 aziz thomas theo ludo (j = joueur)
-	for j in joueur
-		P role(int)								 // role du joueur : P 0 (p = personnage)
 	*/
 }
 
@@ -236,7 +234,7 @@ void Game::deal() {
 	}
 	delete[] deck_aux;
 
-	// montre couleur à chaque joueur
+	// montre couleur à chaque joueur et communique
 	for(auto& x : players) {
 
 		std::string name = (*x).get_name();
@@ -244,14 +242,20 @@ void Game::deal() {
 		int server_port = (*chat).get_port_client(name);
 		std::string server_ip = (*chat).get_ip_client(name);
 
-		std::string message = name + ", your color is " + (*x).get_color() + "\n";
+		std::string color = (*x).get_color();
+
+		std::string message = name + ", your color is " + color + "\n";
 
 		Chatbox::send_message(server_port, server_ip, message);
 
 		// MESSAGES PROTOCOLE COMMUNICATION
-		/* 
-		F joueur(int) carte1(char) carte2(char)  // distributions de cartes : F 1 S B S D (f = fill)
-		*/
+		if (color == "blue")
+			message = "P " + '0';
+		else if (color == "red")
+			message = "P " + '1';
+
+		Chatbox::send_message(server_port, server_ip, message); 			// attribution du rôle P 
+		Chatbox::send_message(server_port, server_ip, (*x).get_deck_str()); // etat du deck F thomas S B S D (f = fill)
 	}
 }
 
@@ -284,7 +288,7 @@ void Game::play() {
 		std::stringstream ss(global_buffer);	// permet d'utiliser global_buffer comme d'un stream
 		std::string message;					// une ligne du global_buffer
 
-		// tant qu'il y a une ligne à lire dans le global_buffer
+		// tant qu'il y a une ligne à lire dans le global_buffer (messages réseaux des clients)
 		while (getline(ss, message, '\n')) {
 
 			// traitement du protocole réseau
@@ -343,19 +347,20 @@ void Game::play() {
 		if(can_draw) {
 			can_draw = false;
 			global_buffer = "";
-			// On tente un tirage
 
+			// On tente un tirage
 			if(play_draw(next_player, target, card)) {
 				drew_cards_rd++;
 				(*chat).broadcast_message(to_string());	// affiche la partie pour tous les joueurs à chaque tirage 
-				
+
 				// MESSAGES PROTOCOLE RESEAU
-				/* 
-				A carte_tirée(char)	// dévoile la carte qui vient d'être tirée : A S (a = arrivée)
-				R nb_rd(int) 		// round actuel (r = round)
-				C nb_c(int)  		// cartes tirées (c = carte)
-				D nb_d(int)  		// defusers trouvés(d = defuser)
-				*/
+				std::string message;
+				message = "C " + drew_cards_rd;  			 // cartes tirées dans le round
+				Chatbox::send_message((*chat).get_port_client(drawer), (*chat).get_ip_client(drawer), message);
+				message = "D " + def_found;					 // defusers trouvé dans la partie
+				Chatbox::send_message((*chat).get_port_client(drawer), (*chat).get_ip_client(drawer), message);
+				message = "A " + last_card_drew;			 // dernière cartes tirées
+				Chatbox::send_message((*chat).get_port_client(drawer), (*chat).get_ip_client(drawer), message);
 			}
 			else
 				std::cout << "No cards to draw !\n";
@@ -366,6 +371,12 @@ void Game::play() {
 				nb_round++;
 				deal();
 				(*chat).broadcast_message(to_string()); // montre la nouvelle distribution
+				
+				// MESSAGES PROTOCOLE RESEAU
+				message = "R " + nb_round;  		// nombre de round joués
+				Chatbox::send_message((*chat).get_port_client(drawer), (*chat).get_ip_client(drawer), message);
+				message = "C " + drew_cards_rd;		// cartes tirées dans le round
+				Chatbox::send_message((*chat).get_port_client(drawer), (*chat).get_ip_client(drawer), message);
 			}
 		}
 	}
@@ -393,17 +404,20 @@ bool Game::draw(Player* a, Player* b, int card) {
 
 	if (typeid(*removed_card) == typeid(Safety)) {
 		std::cout << "Safety found !\n";
+		last_card_drew = 'S';	// protocole de communication
 	}
 	else if (typeid(*removed_card) == typeid(Defuser)) {
 		std::cout << "Defuser found !\n";
 		def_found++;
+		last_card_drew = 'D'; 	// protocole de communication
 	}
 	else if (typeid(*removed_card) == typeid(Bomb)) {
 		std::cout << "Bomb found !\n";
 		bomb_found++;
+		last_card_drew = 'B'; 	// protocole de communication
 	}
 
-	a->draw(b, card);	// Supprime le pointeur du player::deck
+	a->draw(b, card);			// Supprime le pointeur du player::deck
 
 	 // Supprime le pointeur du game::full_deck
 	for (std::vector<Card*>::iterator it = full_deck.begin(); it != full_deck.end(); it++) {
