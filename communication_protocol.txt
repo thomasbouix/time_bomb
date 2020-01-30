@@ -1,0 +1,30 @@
+Protocole de communication client / serveur
+
+===========================
+
+Client -> 
+T joueur(int) indice(int) // tire une carte : T 0 1 (t = tire)
+
+===========================
+
+Serveur -> 
+R nb_rd(int) // round actuel (r = round)
+C nb_c(int)  // cartes tirées (c = carte)
+D nb_d(int)  // defusers trouvés(d = defuser)
+
+F joueur(int) carte1(char) carte2(char)  // distributions de cartes : F 1 S B S D (f = fill)
+J nombre_joueur(int) nom1(str) nom2(str) // infos sur les joueurs : J 4 aziz thomas theo ludo (j = joueur)
+A carte_tirée(char)						 // dévoile la carte qui vient d'être tirée : A S (a = arrivée)
+P role(int)								 // role du joueur : P 0 (p = personnage)
+
+===========================
+
+Symboles Utilisés ->
+Safety : S
+Defuser : D
+Bomb : B
+
+Blue : 0
+Red : 1
+
+===========================
