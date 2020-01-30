@@ -146,6 +146,13 @@ void Game::fill_players(std::vector<std::string> real_players) {
 				return;
 		}
 	}
+
+	// COMMUNICATION PROTOCOLE RESEAU
+	/* 
+	J nombre_joueur(int) nom1(str) nom2(str) // infos sur les joueurs : J 4 aziz thomas theo ludo (j = joueur)
+	for j in joueur
+		P role(int)								 // role du joueur : P 0 (p = personnage)
+	*/
 }
 
 std::string Game::to_string() {
@@ -240,6 +247,11 @@ void Game::deal() {
 		std::string message = name + ", your color is " + (*x).get_color() + "\n";
 
 		Chatbox::send_message(server_port, server_ip, message);
+
+		// MESSAGES PROTOCOLE COMMUNICATION
+		/* 
+		F joueur(int) carte1(char) carte2(char)  // distributions de cartes : F 1 S B S D (f = fill)
+		*/
 	}
 }
 
@@ -274,10 +286,13 @@ void Game::play() {
 
 		// tant qu'il y a une ligne à lire dans le global_buffer
 		while (getline(ss, message, '\n')) {
+
+			// traitement du protocole réseau
+
 			std::transform(message.begin(), message.end(), message.begin(), tolower);
 			std::string::size_type pos = message.find("draw");
 
-			if( pos != std::string::npos ) {
+			if (pos != std::string::npos) {
 				std::stringstream iss(message);					// utilisation du message comme d'un stream
 				iss >> drawer >> action >> target >> card;  	// extraction data
 				drawer = drawer.substr(0, drawer.length()-1);	// retire les deux points
@@ -332,7 +347,15 @@ void Game::play() {
 
 			if(play_draw(next_player, target, card)) {
 				drew_cards_rd++;
-				(*chat).broadcast_message(to_string());	// affiche la partie pour tous les joueurs à chaque tirage
+				(*chat).broadcast_message(to_string());	// affiche la partie pour tous les joueurs à chaque tirage 
+				
+				// MESSAGES PROTOCOLE RESEAU
+				/* 
+				A carte_tirée(char)	// dévoile la carte qui vient d'être tirée : A S (a = arrivée)
+				R nb_rd(int) 		// round actuel (r = round)
+				C nb_c(int)  		// cartes tirées (c = carte)
+				D nb_d(int)  		// defusers trouvés(d = defuser)
+				*/
 			}
 			else
 				std::cout << "No cards to draw !\n";
