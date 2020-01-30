@@ -3,7 +3,7 @@ Protocole de communication client / serveur
 ===========================
 
 Client -> 
-draw joueur(int) indice(int) // tire une carte : T 0 1 (t = tire)
+draw joueur(str) indice(int) // tire une carte : T thomas 1 (t = tire)
 
 ===========================
 

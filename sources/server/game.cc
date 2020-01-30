@@ -148,9 +148,12 @@ void Game::fill_players(std::vector<std::string> real_players) {
 	}
 
 	// COMMUNICATION PROTOCOLE RESEAU
-	/* 
-	J nombre_joueur(int) nom1(str) nom2(str) // infos sur les joueurs : J 4 aziz thomas theo ludo (j = joueur)
-	*/
+	std::stringstream iss;
+	iss << "J " << nb_players;
+	for (auto& p : players) {
+		iss << p->get_name();
+	}
+	(*chat).broadcast_message(iss.str()); // J 4 thomas aziz ludo theo
 }
 
 std::string Game::to_string() {
@@ -238,14 +241,12 @@ void Game::deal() {
 	for(auto& x : players) {
 
 		std::string name = (*x).get_name();
-
 		int server_port = (*chat).get_port_client(name);
 		std::string server_ip = (*chat).get_ip_client(name);
-
 		std::string color = (*x).get_color();
 
+		// TO_STRING CONSOLE
 		std::string message = name + ", your color is " + color + "\n";
-
 		Chatbox::send_message(server_port, server_ip, message);
 
 		// MESSAGES PROTOCOLE COMMUNICATION
@@ -253,7 +254,6 @@ void Game::deal() {
 			message = "P " + '0';
 		else if (color == "red")
 			message = "P " + '1';
-
 		Chatbox::send_message(server_port, server_ip, message); 			// attribution du rôle P 
 		Chatbox::send_message(server_port, server_ip, (*x).get_deck_str()); // etat du deck F thomas S B S D (f = fill)
 	}
@@ -370,6 +370,7 @@ void Game::play() {
 				drew_cards_rd = 0;
 				nb_round++;
 				deal();
+				// TO_STRING CONSOLE
 				(*chat).broadcast_message(to_string()); // montre la nouvelle distribution
 				
 				// MESSAGES PROTOCOLE RESEAU
