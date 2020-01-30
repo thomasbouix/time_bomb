@@ -9,8 +9,8 @@ T joueur(int) indice(int) // tire une carte : T 0 1 (t = tire)
 
 Serveur -> 
 R nb_rd(int) // round actuel (r = round)
-C nb_c(int)  // cartes tirées (c = carte)
-D nb_d(int)  // defusers trouvés(d = defuser)
+C nb_c(int)  // nombres de cartes tirées dans le round(c = carte)
+D nb_d(int)  // defusers trouvés dans la partie (d = defuser)
 
 F joueur(int) carte1(char) carte2(char)  // distributions de cartes : F 1 S B S D (f = fill)
 P role(int)								 // role du joueur : P 0 (p = personnage)
