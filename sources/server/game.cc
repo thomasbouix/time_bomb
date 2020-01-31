@@ -149,11 +149,11 @@ void Game::fill_players(std::vector<std::string> real_players) {
 
 	// COMMUNICATION PROTOCOLE RESEAU
 	std::stringstream iss;
-	iss << "J " << nb_players;
+	iss << "J ";
 	for (auto& p : players) {
 		iss << p->get_name();
 	}
-	(*chat).broadcast_message(iss.str()); // J 4 thomas aziz ludo theo
+	(*chat).broadcast_message(iss.str()); // J thomas aziz ludo theo
 }
 
 std::string Game::to_string() {
