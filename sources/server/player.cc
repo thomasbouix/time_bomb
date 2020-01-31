@@ -104,7 +104,7 @@ int Player::get_size_deck() const  {
 
 std::string Player::get_deck_str(void) {
 
-	std::string message = "F " + this->get_name();
+	std::string message = "F ";
 
 	for (auto& c : deck) {
 

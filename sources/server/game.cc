@@ -255,7 +255,7 @@ void Game::deal() {
 		else if (color == "red")
 			message = "P " + '1';
 		Chatbox::send_message(server_port, server_ip, message); 			// attribution du rôle P 
-		Chatbox::send_message(server_port, server_ip, (*x).get_deck_str()); // etat du deck F thomas S B S D (f = fill)
+		Chatbox::send_message(server_port, server_ip, (*x).get_deck_str()); // etat du deck F S B S D (f = fill)
 	}
 }
 
@@ -359,7 +359,7 @@ void Game::play() {
 				Chatbox::send_message((*chat).get_port_client(drawer), (*chat).get_ip_client(drawer), message);
 				message = "D " + def_found;					 // defusers trouvé dans la partie
 				Chatbox::send_message((*chat).get_port_client(drawer), (*chat).get_ip_client(drawer), message);
-				message = "A " + last_card_drew;			 // dernière cartes tirées
+				message = "A " + target + last_card_drew;	 // dernière cartes tirées
 				Chatbox::send_message((*chat).get_port_client(drawer), (*chat).get_ip_client(drawer), message);
 			}
 			else
