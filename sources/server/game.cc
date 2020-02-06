@@ -364,16 +364,20 @@ void Game::play() {
 				// MESSAGES PROTOCOLE RESEAU
 				std::string message;
 				message = "C " + std::to_string(drew_cards_rd);  			 // cartes tirées dans le round
-				Chatbox::send_message((*chat).get_port_client(drawer), (*chat).get_ip_client(drawer), message);
+				(*chat).broadcast_message(message);
 				std::cout << message << std::endl;
+
 				message = "D " + std::to_string(def_found);					 // defusers trouvé dans la partie
-				Chatbox::send_message((*chat).get_port_client(drawer), (*chat).get_ip_client(drawer), message);
+				(*chat).broadcast_message(message);
 				std::cout << message << std::endl;
+
 				message = "A " + target + " " + std::to_string(card) + " " + last_card_drew; // dernière cartes tirées A theo 2 S
-				Chatbox::send_message((*chat).get_port_client(drawer), (*chat).get_ip_client(drawer), message);
+				(*chat).broadcast_message(message);
 				std::cout << message << std::endl;
+
 				message = "R " + std::to_string(nb_round);  		// nombre de round joués
-				Chatbox::send_message((*chat).get_port_client(drawer), (*chat).get_ip_client(drawer), message);
+				(*chat).broadcast_message(message);
+				std::cout << message << std::endl;
 			}
 			else
 				std::cout << "No cards to draw !\n";
