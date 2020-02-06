@@ -148,13 +148,20 @@ void Game::fill_players(std::vector<std::string> real_players) {
 	}
 
 	// COMMUNICATION PROTOCOLE RESEAU
-	std::stringstream iss;
-	iss << "J ";
+	// J joueur1 joueur2 joueur3 : message different pour chaque joueur
+	std::string name;
+	std::string message_;
+	message_ = "J ";
 	for (auto& p : players) {
-		iss << p->get_name() << " ";
+		for (auto& p1 : players) {
+			if (p != p1)
+				message_ += p1->get_name() + " ";
+		}
+		name = (*p).get_name();
+		Chatbox::send_message((*chat).get_port_client(name), (*chat).get_ip_client(name), message_);
+		std::cout << message_ << std::endl;
+		message_ = "J ";
 	}
-	(*chat).broadcast_message(iss.str()); // J thomas aziz ludo theo
-	std::cout << iss.str() << std::endl;
 }
 
 std::string Game::to_string() {
