@@ -242,13 +242,13 @@ void Game::deal() {
 	for(auto& x : players) {
 
 		std::string name = (*x).get_name();
-		int server_port = (*chat).get_port_client(name);
-		std::string server_ip = (*chat).get_ip_client(name);
+		int port = (*chat).get_port_client(name);
+		std::string ip = (*chat).get_ip_client(name);
 		std::string color_ = (*x).get_color();
 
 		// TO_STRING CONSOLE
 		std::string message = name + ", your color is " + color_ + "\n";
-		Chatbox::send_message(server_port, server_ip, message);
+		Chatbox::send_message(port, ip, message);
 
 		// MESSAGES PROTOCOLE COMMUNICATION
 		message = "";
@@ -260,9 +260,9 @@ void Game::deal() {
 			message = "P 1";
 			std::cout << message << std::endl;
 		}
-		Chatbox::send_message(server_port, server_ip, message); 			// attribution du rôle P 
+		Chatbox::send_message(port, ip, message); 				// attribution du rôle P 
 		std::cout << message << std::endl;
-		Chatbox::send_message(server_port, server_ip, (*x).get_deck_str()); // etat du deck F S B S D (f = fill)
+		Chatbox::send_message(port, ip, (*x).get_deck_str()); 	// etat du deck F S B S D (f = fill)
 		std::cout << (*x).get_deck_str() << std::endl;
 	}
 }
