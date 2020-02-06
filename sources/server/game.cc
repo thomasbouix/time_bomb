@@ -151,9 +151,10 @@ void Game::fill_players(std::vector<std::string> real_players) {
 	std::stringstream iss;
 	iss << "J ";
 	for (auto& p : players) {
-		iss << p->get_name();
+		iss << p->get_name() << " ";
 	}
 	(*chat).broadcast_message(iss.str()); // J thomas aziz ludo theo
+	std::cout << iss.str() << std::endl;
 }
 
 std::string Game::to_string() {
@@ -243,19 +244,26 @@ void Game::deal() {
 		std::string name = (*x).get_name();
 		int server_port = (*chat).get_port_client(name);
 		std::string server_ip = (*chat).get_ip_client(name);
-		std::string color = (*x).get_color();
+		std::string color_ = (*x).get_color();
 
 		// TO_STRING CONSOLE
-		std::string message = name + ", your color is " + color + "\n";
+		std::string message = name + ", your color is " + color_ + "\n";
 		Chatbox::send_message(server_port, server_ip, message);
 
 		// MESSAGES PROTOCOLE COMMUNICATION
-		if (color == "blue")
-			message = "P " + '0';
-		else if (color == "red")
-			message = "P " + '1';
+		message = "";
+		if (color_ == "blue") {
+			message = "P 0";
+			std::cout << message << std::endl;
+		}
+		else if (color_ == "red") {
+			message = "P 1";
+			std::cout << message << std::endl;
+		}
 		Chatbox::send_message(server_port, server_ip, message); 			// attribution du rôle P 
+		std::cout << message << std::endl;
 		Chatbox::send_message(server_port, server_ip, (*x).get_deck_str()); // etat du deck F S B S D (f = fill)
+		std::cout << (*x).get_deck_str() << std::endl;
 	}
 }
 
@@ -357,10 +365,13 @@ void Game::play() {
 				std::string message;
 				message = "C " + drew_cards_rd;  			 // cartes tirées dans le round
 				Chatbox::send_message((*chat).get_port_client(drawer), (*chat).get_ip_client(drawer), message);
+				std::cout << message << std::endl;
 				message = "D " + def_found;					 // defusers trouvé dans la partie
 				Chatbox::send_message((*chat).get_port_client(drawer), (*chat).get_ip_client(drawer), message);
-				message = "A " + target + last_card_drew;	 // dernière cartes tirées
+				std::cout << message << std::endl;
+				message = "A " + target + " " + last_card_drew;	 // dernière cartes tirées
 				Chatbox::send_message((*chat).get_port_client(drawer), (*chat).get_ip_client(drawer), message);
+				std::cout << message << std::endl;
 			}
 			else
 				std::cout << "No cards to draw !\n";
@@ -376,8 +387,10 @@ void Game::play() {
 				// MESSAGES PROTOCOLE RESEAU
 				message = "R " + nb_round;  		// nombre de round joués
 				Chatbox::send_message((*chat).get_port_client(drawer), (*chat).get_ip_client(drawer), message);
+				std::cout << message << std::endl;
 				message = "C " + drew_cards_rd;		// cartes tirées dans le round
 				Chatbox::send_message((*chat).get_port_client(drawer), (*chat).get_ip_client(drawer), message);
+				std::cout << message << std::endl;
 			}
 		}
 	}
