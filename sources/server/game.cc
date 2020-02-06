@@ -372,6 +372,8 @@ void Game::play() {
 				message = "A " + target + " " + last_card_drew;	 // dernière cartes tirées
 				Chatbox::send_message((*chat).get_port_client(drawer), (*chat).get_ip_client(drawer), message);
 				std::cout << message << std::endl;
+				message = "R " + std::to_string(nb_round);  		// nombre de round joués
+				Chatbox::send_message((*chat).get_port_client(drawer), (*chat).get_ip_client(drawer), message);
 			}
 			else
 				std::cout << "No cards to draw !\n";
