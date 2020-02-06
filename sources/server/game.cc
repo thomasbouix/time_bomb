@@ -287,7 +287,7 @@ void Game::play() {
 
 		// Variables pour l'extraction des données du buffer réseau
 		std::string target, drawer, action;
-		int card;
+		int card;	// indice de la carte tirée
 
 		(*chat).broadcast_message("admin :" + next_player->get_name() + ", your turn to play :\n");
 
@@ -369,7 +369,7 @@ void Game::play() {
 				message = "D " + std::to_string(def_found);					 // defusers trouvé dans la partie
 				Chatbox::send_message((*chat).get_port_client(drawer), (*chat).get_ip_client(drawer), message);
 				std::cout << message << std::endl;
-				message = "A " + target + " " + last_card_drew;	 // dernière cartes tirées
+				message = "A " + target + " " + std::to_string(card) + " " + last_card_drew; // dernière cartes tirées A theo 2 S
 				Chatbox::send_message((*chat).get_port_client(drawer), (*chat).get_ip_client(drawer), message);
 				std::cout << message << std::endl;
 				message = "R " + std::to_string(nb_round);  		// nombre de round joués
