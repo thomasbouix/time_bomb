@@ -363,10 +363,10 @@ void Game::play() {
 
 				// MESSAGES PROTOCOLE RESEAU
 				std::string message;
-				message = "C " + drew_cards_rd;  			 // cartes tirées dans le round
+				message = "C " + std::to_string(drew_cards_rd);  			 // cartes tirées dans le round
 				Chatbox::send_message((*chat).get_port_client(drawer), (*chat).get_ip_client(drawer), message);
 				std::cout << message << std::endl;
-				message = "D " + def_found;					 // defusers trouvé dans la partie
+				message = "D " + std::to_string(def_found);					 // defusers trouvé dans la partie
 				Chatbox::send_message((*chat).get_port_client(drawer), (*chat).get_ip_client(drawer), message);
 				std::cout << message << std::endl;
 				message = "A " + target + " " + last_card_drew;	 // dernière cartes tirées
@@ -385,10 +385,10 @@ void Game::play() {
 				(*chat).broadcast_message(to_string()); // montre la nouvelle distribution
 				
 				// MESSAGES PROTOCOLE RESEAU
-				message = "R " + nb_round;  		// nombre de round joués
+				message = "R " + std::to_string(nb_round);  		// nombre de round joués
 				Chatbox::send_message((*chat).get_port_client(drawer), (*chat).get_ip_client(drawer), message);
 				std::cout << message << std::endl;
-				message = "C " + drew_cards_rd;		// cartes tirées dans le round
+				message = "C " + std::to_string(drew_cards_rd);		// cartes tirées dans le round
 				Chatbox::send_message((*chat).get_port_client(drawer), (*chat).get_ip_client(drawer), message);
 				std::cout << message << std::endl;
 			}
