@@ -4,29 +4,32 @@ Window::Window(std::string name,std::string local_player_name, int length, int w
   SDL_Init(SDL_INIT_VIDEO);
   TTF_Init();
 
+  std::cout << "SDL_Init" << std::endl;
+
   window = SDL_CreateWindow(name.c_str(),SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, length, width, 0);
   renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 
-  texts = new Text("font/timeless_bold.ttf",20,color);
-  chatbox = new Text("font/timeless_bold.ttf",16,color);
-  current_text = new Text("font/timeless_bold.ttf",16,color);
-  names = new Text("font/timeless_bold.ttf",20,color);
-
+  texts = new Text("sources/client/font/timeless_bold.ttf",20,color);
+  chatbox = new Text("sources/client/font/timeless_bold.ttf",16,color);
+  current_text = new Text("sources/client/font/timeless_bold.ttf",16,color);
+  names = new Text("sources/client/font/timeless_bold.ttf",20,color);
   (*current_text).add(" ",530,730);
 
   SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255); // en blanc
   rect = {0, 0, length, width};
   SDL_RenderFillRect(renderer, &rect);
 
-  Picture* image = new Picture("images/fond.png",1024,768,0,0);
+  std::cout << "Begin pictures adding" << std::endl;
+  Picture* image = new Picture("sources/client/images/fond.png",1024,768,0,0);
   this->add(image);
-  image = new Picture("images/chat.png",485, 490, 525, 265);
+  image = new Picture("sources/client/images/chat.png",485, 490, 525, 265);
   this->add(image);
-  image = new Picture("images/red.png",100, 200,30, 500);
+  image = new Picture("sources/client/images/red.png",100, 200,30, 500);
   this->add(image);
-  claw = new Picture("images/claw.png",75,150,350,290);
+  claw = new Picture("sources/client/images/claw.png",75,150,350,290);
   your_turn = false;
 
+  std::cout << "End pictures adding" << std::endl;
   print_values(0,0,0);
 
   for(int i=0; i<27; i++)
@@ -106,8 +109,10 @@ P role(int)								 // role du joueur : P 0 (p = personnage) OK
 J nom1(str) nom2(str) // infos sur les joueurs : J 4 aziz thomas theo ludo (j = joueur)
 A carte_tiree(char)						 // dévoile la carte qui vient d'être tirée : A S (a = arrivée)
 */
-  std::vector<std::string> roles = {"images/blue.png","images/red.png"};
-  std::vector<std::string> paths_cards_players = {"images/back.png","images/back.png","images/back.png","images/back.png","images/back.png"};
+  std::vector<std::string> roles = {"sources/client/images/blue.png","sources/client/images/red.png"};
+  std::vector<std::string> paths_cards_players = {"sources/client/images/back.png","sources/client/images/back.png",
+                                                  "sources/client/images/back.png","sources/client/images/back.png",
+                                                  "sources/client/images/back.png"};
 
   std::vector<std::string> paths_cards_localplayer;
   std::string role_localplayer = "";
@@ -124,13 +129,13 @@ A carte_tiree(char)						 // dévoile la carte qui vient d'être tirée : A S (a
         while(getline(ss,path,' ')){
           switch ((char)(path[0])){
             case 'S':
-              paths_cards_localplayer.push_back("images/safety.png");
+              paths_cards_localplayer.push_back("sources/client/images/safety.png");
             break;
             case 'D':
-              paths_cards_localplayer.push_back("images/defuser.png");
+              paths_cards_localplayer.push_back("sources/client/images/defuser.png");
             break;
             case 'B':
-              paths_cards_localplayer.push_back("images/bomb.png");
+              paths_cards_localplayer.push_back("sources/client/images/bomb.png");
             break;
           }
         }

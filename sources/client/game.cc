@@ -4,7 +4,9 @@
 Game::Game(std::string local_player_name, int client_port, int server_port,std::string client_ip, std::string server_ip){
   Color color(174,100,56);
   name = local_player_name;
+  std::cout << "Client" << std::endl;
 	client = new Client(local_player_name,client_port,server_port,client_ip,server_ip);
+  std::cout << "Window" << std::endl;
 	window = new Window("TimeBomb",local_player_name,1024,768,color);
 
 }

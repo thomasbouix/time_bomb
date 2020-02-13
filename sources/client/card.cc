@@ -7,7 +7,7 @@ Card::Card(std::string path, int length, int width, int x, int y, int status):pa
   if(status == 1)
     picture = new Picture(path,length,width,x,y);
   else
-    picture = new Picture("images/back.png",length,width,x,y);
+    picture = new Picture("sources/client/images/back.png",length,width,x,y);
 }
 
 Card::~Card(){
@@ -27,13 +27,13 @@ void Card::return_card(){
 void Card::set_path(std::string card_type){
   switch(card_type[0]){
     case 'D':
-      path = "images/defuser.png";
+      path = "sources/client/images/defuser.png";
     break;
     case 'S':
-      path = "images/safety.png";
+      path = "sources/client/images/safety.png";
     break;
     case 'B':
-      path = "images/bomb.png";
+      path = "sources/client/images/bomb.png";
     break;
   }
 }
