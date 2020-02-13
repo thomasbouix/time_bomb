@@ -1,4 +1,4 @@
-#include "../../includes/chatbox.hh"
+#include "../../includes/server/chatbox.hh"
 
 
 std::vector<Client *> clients;
@@ -14,7 +14,7 @@ void fn_serveur_tcp(int cli_sockfd, std::string name){
 		if(recv(cli_sockfd,buffer, 1024, 0) > 0){
 			std::string str(buffer);
 			for(auto& x : clients){
-				if(name != ((*x).get_name())) 
+				if(name != ((*x).get_name()))
 					Chatbox::send_message((*x).get_port(),(*x).get_ip(),name + ":" + str);
 			}
 			global_buffer = global_buffer + name + ": " + str + "\n";
@@ -31,7 +31,7 @@ void Chatbox::send_message(int server_port, std::string server_ip, std::string m
 	std::string buffer,name;
 
 	client_socket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
-	if(client_socket < 0) 
+	if(client_socket < 0)
 		error("[-]Error in connection");
 
 	memset(&server_addr, '\0', sizeof(server_addr));
@@ -40,10 +40,10 @@ void Chatbox::send_message(int server_port, std::string server_ip, std::string m
 	server_addr.sin_addr.s_addr = inet_addr(server_ip.c_str());
 
 	ret = connect(client_socket, (struct sockaddr*)&server_addr, sizeof(server_addr));
-	if(ret < 0) 
+	if(ret < 0)
 		error("[-]Error in connection"); // ERREUR ICI
 	n = write(client_socket,message.c_str(),message.size());
-  	if(n < 0) 
+  	if(n < 0)
   		error("ERROR writing to socket");
 
 	close(client_socket);
@@ -58,7 +58,7 @@ Chatbox::Chatbox(int port, int number_players):port(port),number_players(number_
 	socklen_t addr_size;
 
 	sockfd = socket(AF_INET, SOCK_STREAM, 0);
-	if(sockfd < 0) 
+	if(sockfd < 0)
 		error("[-]Error in connection.");
 	std::cout << "[+]Server Socket is created." << std::endl;
 
@@ -68,28 +68,28 @@ Chatbox::Chatbox(int port, int number_players):port(port),number_players(number_
 	server_addr.sin_addr.s_addr = inet_addr("127.0.0.1");
 
 	int ret = bind(sockfd, (struct sockaddr*)&server_addr, sizeof(server_addr));
-	if(ret < 0) 
+	if(ret < 0)
 		error("[-]Error in binding.");
 	std::cout << "[+]Bind to port " << port << std::endl;
 
-	if(listen(sockfd, 10) == 0) 
+	if(listen(sockfd, 10) == 0)
 		std::cout << "[+]Listening...." << std::endl;
 
 	while(number_connect != number_players) {
 		new_socket = accept(sockfd, (struct sockaddr*)&new_addr, &addr_size);
-		if(new_socket < 0) 
+		if(new_socket < 0)
 			error("[-]Error in accepting");
 
 		char buffer[255];
 		bzero(buffer, sizeof(buffer));
 
-		while(recv(new_socket,buffer, 255, 0) < 0) 
+		while(recv(new_socket,buffer, 255, 0) < 0)
 			bzero(buffer, sizeof(buffer));
 
 		std::string s(buffer);
 		std::stringstream ss(s);
 		std::vector<std::string> tab;
-		while( std::getline(ss,s,'\n') ) 
+		while( std::getline(ss,s,'\n') )
 			tab.push_back(s);
 
 		Client* client = new Client(tab[0],atoi(tab[1].c_str()),tab[2]);

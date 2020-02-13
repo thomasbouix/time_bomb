@@ -1,4 +1,4 @@
-#include "../../includes/strong.hh"
+#include "../../includes/server/strong.hh"
 
 Strong::Strong() : Bot() {}
 
@@ -8,7 +8,6 @@ void Strong::draw() {
 
 	// Implémenter un tirage automatique spécifique à STRONG
 	// Besoin de la liste des joueurs dans GAME pour cela
-	
+
 	std::cout << "Auto draw !\n";
 }
-

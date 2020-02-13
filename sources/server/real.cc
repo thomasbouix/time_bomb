@@ -1,4 +1,4 @@
-#include "../../includes/real.hh"
+#include "../../includes/server/real.hh"
 
 Real::Real() : Player() {}
 
@@ -8,6 +8,6 @@ void Real::draw() {
 
 	// Implémenter un tirage automatique spécifique à REAL
 	// Besoin de la liste des joueurs dans GAME pour cela
-	
+
 	std::cout << "Auto draw !\n";
 }

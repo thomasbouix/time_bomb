@@ -1,7 +1,7 @@
 #include <iostream>
 #include <vector>
 
-#include "../../includes/game.hh"
+#include "../../includes/server/game.hh"
 
 std::string global_buffer;
 
@@ -14,7 +14,7 @@ int main(int argc, char * argv[]) {
 
 	int port = atoi(argv[1]);
 	int n_player = atoi(argv[2]);
-	
+
 	Game g1(n_player, port);
 	g1.play();
 

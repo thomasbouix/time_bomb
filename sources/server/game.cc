@@ -1,4 +1,4 @@
-#include "../../includes/game.hh"
+#include "../../includes/server/game.hh"
 
 Game::Game(int nb_players, int port) {
 
@@ -267,7 +267,7 @@ void Game::deal() {
 			message = "P 1";
 			std::cout << message << std::endl;
 		}
-		Chatbox::send_message(port, ip, message); 				// attribution du rôle P 
+		Chatbox::send_message(port, ip, message); 				// attribution du rôle P
 		std::cout << message << std::endl;
 		Chatbox::send_message(port, ip, (*x).get_deck_str()); 	// etat du deck F S B S D (f = fill)
 		std::cout << (*x).get_deck_str() << std::endl;
@@ -301,7 +301,7 @@ void Game::play() {
 
 		// (*chat).broadcast_message("admin : " + next_player->get_name() + ", your turn to play\n");
 
-		while (global_buffer.size() == 0);		// attend de recevoir un message 
+		while (global_buffer.size() == 0);		// attend de recevoir un message
 
 		std::stringstream ss(global_buffer);	// permet d'utiliser global_buffer comme d'un stream
 		std::string message;					// une ligne du global_buffer
@@ -318,7 +318,7 @@ void Game::play() {
 				iss >> drawer >> action >> target >> card;  	// extraction data
 				drawer = drawer.substr(0, drawer.length()-1);	// retire les deux points
 
-				// déclaration d'un tirage : 
+				// déclaration d'un tirage :
 				if (action == "draw") {
 					// le joueur qui tire n'avait pas la main
 					if (drawer != next_player->get_name()) {
@@ -345,14 +345,14 @@ void Game::play() {
 						global_buffer = "";	// sinon bug
 					}
 					// tirage légal
-					else if (drawer == next_player->get_name() && target != previous_player->get_name() 
+					else if (drawer == next_player->get_name() && target != previous_player->get_name()
 						&& target != next_player->get_name()) {
 						can_draw = true;
 						break;
 					}
 				}
 				// message normal - pas d'action
-				else {	
+				else {
 					can_draw = false;
 					global_buffer = "";
 				}
@@ -368,7 +368,7 @@ void Game::play() {
 			// On tente un tirage
 			if(play_draw(next_player, target, card)) {
 				drew_cards_rd++;
-				// (*chat).broadcast_message(to_string());	// affiche la partie pour tous les joueurs à chaque tirage 
+				// (*chat).broadcast_message(to_string());	// affiche la partie pour tous les joueurs à chaque tirage
 
 				// MESSAGES PROTOCOLE RESEAU
 				std::string message;
@@ -394,7 +394,7 @@ void Game::play() {
 				deal();
 				// TO_STRING CONSOLE
 				// (*chat).broadcast_message(to_string()); // montre la nouvelle distribution
-				
+
 				// MESSAGES PROTOCOLE RESEAU
 				message = "R " + std::to_string(nb_round);  		// nombre de round joués
 				(*chat).broadcast_message(message);
@@ -492,7 +492,7 @@ bool Game::test_draw(int a, int b, int c) {
 	return draw(players[res_a], players[res_b], c);
 }
 
-// non utilisée 
+// non utilisée
 bool Game::draw(std::string message) {
 
 	std::string sdrawer, starget, action;

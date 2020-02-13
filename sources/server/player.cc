@@ -1,4 +1,4 @@
-#include "../../includes/player.hh"
+#include "../../includes/server/player.hh"
 
 Player::~Player() {
 	// std::cout << "Player deleted from memory\n";
@@ -12,7 +12,7 @@ Player::Player() {
 	alea++;
 
 	// Couleur initialisée, puis modifiée si besoin avec Bot(int)
-	color = rand() % 2;		
+	color = rand() % 2;
 
 	int n = rand() % 5;
 
@@ -29,7 +29,7 @@ Player::Player() {
 			break;
 		default :
 			break;
-	} 
+	}
 }
 
 Player::Player(int c, std::string n) : color(c), name(n) {}
@@ -44,7 +44,7 @@ std::string Player::get_color(void) {
 		return "blue";
 	else if (color == RED)
 		return "red";
-	
+
 	return "unknown color";
 }
 
@@ -76,7 +76,7 @@ void Player::remove_card(int card) {
 	int removed_card = card % deck.size();		// Elimine les indices trop grands
 
 	// std::cout << deck[removed_card]->to_string() << " removed ! \n";
-	
+
 	deck.erase(deck.begin() + removed_card);
 }
 
@@ -96,7 +96,7 @@ Card* Player::get_card(int card) {
 	int i_res = card % deck.size();
 
 	return deck[i_res];
-} 
+}
 
 int Player::get_size_deck() const  {
 	return deck.size();
@@ -108,7 +108,7 @@ std::string Player::get_deck_str(void) {
 
 	for (auto& c : deck) {
 
-		if (typeid(*c) == typeid(Safety)) 
+		if (typeid(*c) == typeid(Safety))
 			message += "S ";
 		else if (typeid(*c) == typeid(Defuser))
 			message += "D ";

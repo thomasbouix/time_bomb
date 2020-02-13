@@ -1,4 +1,4 @@
-#include "../../includes/safety.hh"
+#include "../../includes/server/safety.hh"
 
 Safety::Safety(){}
 

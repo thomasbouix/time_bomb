@@ -1,4 +1,4 @@
-#include "../../includes/client.hh"
+#include "../../includes/server/client.hh"
 
 
 Client::Client(std::string ip, int port, std::string name):ip(ip),port(port),name(name){
