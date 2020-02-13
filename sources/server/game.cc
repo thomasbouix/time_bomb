@@ -395,10 +395,10 @@ void Game::play() {
 				
 				// MESSAGES PROTOCOLE RESEAU
 				message = "R " + std::to_string(nb_round);  		// nombre de round joués
-				Chatbox::send_message((*chat).get_port_client(drawer), (*chat).get_ip_client(drawer), message);
+				(*chat).broadcast_message(message);
 				std::cout << message << std::endl;
 				message = "C " + std::to_string(drew_cards_rd);		// cartes tirées dans le round
-				Chatbox::send_message((*chat).get_port_client(drawer), (*chat).get_ip_client(drawer), message);
+				(*chat).broadcast_message(message);
 				std::cout << message << std::endl;
 			}
 		}
