@@ -296,7 +296,7 @@ void Game::play() {
 		std::string target, drawer, action;
 		int card;	// indice de la carte tirée
 
-		(*chat).broadcast_message("admin :" + next_player->get_name() + ", your turn to play :\n");
+		// (*chat).broadcast_message("admin : " + next_player->get_name() + ", your turn to play\n");
 
 		while (global_buffer.size() == 0);		// attend de recevoir un message 
 
@@ -320,25 +320,25 @@ void Game::play() {
 					// le joueur qui tire n'avait pas la main
 					if (drawer != next_player->get_name()) {
 						can_draw = false;
-						(*chat).broadcast_message("admin :" + drawer + ", it is not your time to play!\n");
+						// (*chat).broadcast_message("admin :" + drawer + ", it is not your time to play!\n");
 						global_buffer = "";	// sinon bug
 					}
 					// la target n'existe pas
 					else if (!is_a_player(target)) {
 						can_draw = false;
-						(*chat).broadcast_message("admin : this player does not exist\n");
+						// (*chat).broadcast_message("admin : this player does not exist\n");
 						global_buffer = "";
 					}
 					// le joueur se tire lui-même
 					else if (target == next_player->get_name()) {
 						can_draw = false;
-						(*chat).broadcast_message("admin :" + drawer + ", you can not draw yourself!\n");
+						// (*chat).broadcast_message("admin :" + drawer + ", you can not draw yourself!\n");
 						global_buffer = "";
 					}
 					// le joueur tire sur son père
 					else if (target == previous_player->get_name()) {
 						can_draw = false;
-						(*chat).broadcast_message("admin :" + drawer + ", you can not draw your own father!\n");
+						// (*chat).broadcast_message("admin :" + drawer + ", you can not draw your own father!\n");
 						global_buffer = "";	// sinon bug
 					}
 					// tirage légal
