@@ -381,10 +381,6 @@ void Game::play() {
 				message = "A " + target + " " + std::to_string(card) + " " + last_card_drew; // dernière cartes tirées A theo 2 S
 				(*chat).broadcast_message(message);
 				std::cout << message << std::endl;
-
-				message = "R " + std::to_string(nb_round);  		// nombre de round joués
-				(*chat).broadcast_message(message);
-				std::cout << message << std::endl;
 			}
 			else
 				std::cout << "No cards to draw !\n";
