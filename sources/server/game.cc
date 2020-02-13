@@ -4,7 +4,7 @@ Game::Game(int nb_players, int port) {
 
 	this->chat = new Chatbox(port,nb_players);
 	(*chat).print_clients();
-	(*chat).broadcast_message("Let's get started now!\n"); // erreur ICI
+	// (*chat).broadcast_message("Let's get started now!\n"); // erreur ICI
 
 	this->nb_players = nb_players;
 	this->nb_round = 0;
@@ -390,7 +390,7 @@ void Game::play() {
 				nb_round++;
 				deal();
 				// TO_STRING CONSOLE
-				(*chat).broadcast_message(to_string()); // montre la nouvelle distribution
+				// (*chat).broadcast_message(to_string()); // montre la nouvelle distribution
 				
 				// MESSAGES PROTOCOLE RESEAU
 				message = "R " + std::to_string(nb_round);  		// nombre de round joués
