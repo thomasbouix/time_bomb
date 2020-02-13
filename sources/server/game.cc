@@ -285,7 +285,7 @@ void Game::play() {
 
 	std::string line = "";
 
-	(*chat).broadcast_message(to_string());	// affiche la partie pour tous les joueurs
+	// (*chat).broadcast_message(to_string());	// affiche la partie pour tous les joueurs
 
 	// déroulement de la partie
 	while (!bomb_found && (def_found < nb_defusers) && nb_round < 4) {
@@ -307,7 +307,6 @@ void Game::play() {
 		while (getline(ss, message, '\n')) {
 
 			// traitement du protocole réseau
-
 			std::transform(message.begin(), message.end(), message.begin(), tolower);
 			std::string::size_type pos = message.find("draw");
 
@@ -366,7 +365,7 @@ void Game::play() {
 			// On tente un tirage
 			if(play_draw(next_player, target, card)) {
 				drew_cards_rd++;
-				(*chat).broadcast_message(to_string());	// affiche la partie pour tous les joueurs à chaque tirage 
+				// (*chat).broadcast_message(to_string());	// affiche la partie pour tous les joueurs à chaque tirage 
 
 				// MESSAGES PROTOCOLE RESEAU
 				std::string message;
