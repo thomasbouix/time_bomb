@@ -286,6 +286,8 @@ void Game::play() {
 	std::string line = "";
 
 	// (*chat).broadcast_message(to_string());	// affiche la partie pour tous les joueurs
+	std::string message_init = "A " + (*players[0]).get_name() + " 0 S";
+	Chatbox::send_message((*chat).get_port_client((*players[0]).get_name()), (*chat).get_ip_client((*players[0]).get_name()), message_init);
 
 	// déroulement de la partie
 	while (!bomb_found && (def_found < nb_defusers) && nb_round < 4) {
@@ -295,6 +297,7 @@ void Game::play() {
 		// Variables pour l'extraction des données du buffer réseau
 		std::string target, drawer, action;
 		int card;	// indice de la carte tirée
+
 
 		// (*chat).broadcast_message("admin : " + next_player->get_name() + ", your turn to play\n");
 
